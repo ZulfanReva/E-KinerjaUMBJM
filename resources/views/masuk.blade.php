@@ -10,26 +10,61 @@
     <img src="assets/foto/cover1.png" alt="Background Image 2" class="hero-bg" id="backgroundImage2">
   </div>
 
+  <!-- Form Login -->
   <div class="wrapper">
     <img src="assets/foto/logo.png" alt="Your Company Logo" class="LogoLogin" style="max-width: 100px; max-height: 150px; width: auto; height: auto; display: block; margin: 0 auto;">
     <h1 style="color: white">E-KINERJA UMBJM</h1>
     <form action="{{ route('masuk') }}" method="POST">
-      @csrf
-      <div class="input-box">
-          <input type="text" name="username" placeholder="Nama Pengguna" required>
-          <i class='bx bxs-envelope'></i>
-      </div>
-      <div class="input-box">
-          <input type="password" name="password" placeholder="Kata sandi" required>
-          <i class='bx bxs-lock-alt'></i>
-      </div>
-      <div class="remember-forgot">
-          <label></label>
-          <a href="#" id="forgot-password-link">Lupa Password</a>
-      </div>
-      <button type="submit" class="btn">Masuk</button>
+        @csrf
+        <div class="input-box">
+            <input type="text" name="username" placeholder="Nama Pengguna" required>
+            <i class='bx bxs-envelope'></i>
+        </div>
+        <div class="input-box">
+            <input type="password" name="password" placeholder="Kata sandi" required>
+            <i class='bx bxs-lock-alt'></i>
+        </div>
+        <div class="remember-forgot">
+            <label></label>
+            <a href="#" id="forgot-password-link">Lupa Password</a>
+        </div>
+        <button type="submit" class="btn">Masuk</button>
     </form>
-  </div> 
+  </div>
+
+  <!-- SweetAlert CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+     @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Masuk Gagal',
+            html: `{!! session('error') !!}`,  // Menggunakan '!!' untuk menampilkan HTML
+            customClass: {
+                confirmButton: 'btn-custom'  // Menambahkan kelas kustom untuk tombol
+            }
+        });
+    @endif
+  </script>
+
+<style>
+  /* Mengubah ukuran teks SweetAlert */
+  .swal2-popup .swal2-html-container {
+        font-size: 15px;  /* Ukuran teks untuk pesan */
+    }
+  
+  /* Mengubah warna tombol konfirmasi SweetAlert */
+  .swal2-popup .btn-custom {
+      background-color: #001973;  /* Warna tombol */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px; /* Sudut tombol lebih bulat */
+  }
+</style>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

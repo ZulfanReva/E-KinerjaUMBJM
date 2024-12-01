@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -34,6 +35,9 @@ class MasukController extends Controller
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
+        ], [
+            'username.required' => 'Nama Pengguna wajib diisi!',
+            'password.required' => 'Kata Sandi wajib diisi!',
         ]);
 
         // Menyiapkan data login dengan username dan password
@@ -54,11 +58,26 @@ class MasukController extends Controller
             } else {
                 return redirect()->route('index'); // Halaman default jika role tidak sesuai
             }
-        }
+        } else {
+            // Jika login gagal, kirimkan pesan kesalahan
+            return back()->with('error', 'Username atau Kata Sandi yang Anda masukkan salah.<br>Silakan coba lagi.');
 
-        // Jika login gagal, kembali ke halaman login dengan pesan error
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ]);
+        }
+    }
+
+    /**
+     * Proses logout pengguna.
+     */
+    public function logout(Request $request)
+    {
+        // Logout pengguna
+        Auth::logout();
+
+        // Hapus session dan kembalikan ke halaman login
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect ke halaman login setelah logout
+        return redirect()->route('index');
     }
 }

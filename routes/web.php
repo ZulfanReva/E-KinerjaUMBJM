@@ -12,8 +12,10 @@ Route::get('/', [BerandaController::class, 'index'])->name('index');
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 
 // Route untuk halaman login
-Route::get('/masuk', [MasukController::class, 'index'])->name('masuk')->middleware('guest'); // Proteksi untuk user yang sudah login
+Route::get('/masuk', [MasukController::class, 'index'])->name('masuk');
 Route::post('/masuk', [MasukController::class, 'login'])->name('login');
+Route::post('/logout', [MasukController::class, 'logout'])->name('logout');
+
 
 // Route untuk halaman admin (Proteksi dengan middleware auth)
 Route::get('/admin/beranda', function () {

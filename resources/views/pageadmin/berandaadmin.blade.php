@@ -145,10 +145,18 @@
                     <div class="modal-body">
                       Apakah Anda yakin ingin keluar dari akun?
                     </div>
+
                     <div class="modal-footer">
+                      @csrf
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <a href="{{ route('index') }}" class="btn bg-gradient-info">Keluar</a>
-                    </div>
+                  
+                      <!-- Form POST untuk logout -->
+                      <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                          @csrf
+                          <button type="submit" class="btn bg-gradient-info">Keluar</button>
+                      </form>
+                  </div>
+                  
                   </div>
                 </div>
               </div>

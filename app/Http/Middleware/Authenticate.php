@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class Authenticate
 {
     /**
      * Handle an incoming request.
@@ -18,14 +18,19 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        $user = Auth::user();
-
-        // Cek apakah user sudah login dan memiliki role yang sesuai
-        if ($user && in_array($user->role, $roles)) {
-            return $next($request);
+        // Cek apakah user sudah login
+        if (!Auth::check()) {
+            return redirect()->route('masuk'); // Arahkan ke halaman login jika belum login
         }
 
-        // Jika tidak sesuai, redirect atau return 403
+        $user = Auth::user();
+
+        // Cek apakah user memiliki role yang sesuai
+        if (in_array($user->role, $roles)) {
+            return $next($request); // Lanjutkan jika role sesuai
+        }
+
+        // Jika tidak sesuai, kembalikan 403
         return abort(403, 'Unauthorized access');
     }
 }
