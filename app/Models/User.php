@@ -18,9 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',  // Sesuai dengan kolom di tabel migrasi
         'password',
+        'role',      // Tambahkan kolom role
     ];
 
     /**
@@ -38,11 +38,24 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * Create a new user with a specific role.
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $role
+     * @return static
+     */
+    public static function createWithRole(string $username, string $password, string $role = 'pengawas')
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return self::create([
+            'username' => $username,
+            'password' => bcrypt($password), // Enkripsi password
+            'role' => $role,
+        ]);
     }
 }

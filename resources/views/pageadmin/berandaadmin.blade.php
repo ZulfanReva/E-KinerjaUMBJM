@@ -147,7 +147,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <a href="../index.html" class="btn bg-gradient-info">Keluar</a>
+                      <a href="{{ route('index') }}" class="btn bg-gradient-info">Keluar</a>
                     </div>
                   </div>
                 </div>

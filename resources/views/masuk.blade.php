@@ -13,20 +13,21 @@
   <div class="wrapper">
     <img src="assets/foto/logo.png" alt="Your Company Logo" class="LogoLogin" style="max-width: 100px; max-height: 150px; width: auto; height: auto; display: block; margin: 0 auto;">
     <h1 style="color: white">E-KINERJA UMBJM</h1>
-    <form action="pagepengawas/berandapengawas.html" method="get"> 
-        <div class="input-box">
-            <input type="email" placeholder="Nama Pengguna" required>
-            <i class='bx bxs-envelope'></i>
-        </div>
-        <div class="input-box">
-            <input type="password" placeholder="Kata sandi" required>
-            <i class='bx bxs-lock-alt'></i>
-        </div>
-        <div class="remember-forgot">
+    <form action="{{ route('masuk') }}" method="POST">
+      @csrf
+      <div class="input-box">
+          <input type="text" name="username" placeholder="Nama Pengguna" required>
+          <i class='bx bxs-envelope'></i>
+      </div>
+      <div class="input-box">
+          <input type="password" name="password" placeholder="Kata sandi" required>
+          <i class='bx bxs-lock-alt'></i>
+      </div>
+      <div class="remember-forgot">
           <label></label>
           <a href="#" id="forgot-password-link">Lupa Password</a>
-        </div>
-        <button type="submit" class="btn">Masuk</button>
+      </div>
+      <button type="submit" class="btn">Masuk</button>
     </form>
   </div> 
 
