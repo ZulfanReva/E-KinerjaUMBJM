@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,39 +32,22 @@ class MasukController extends Controller
      */
     public function login(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ], [
-            'username.required' => 'Nama Pengguna wajib diisi!',
-            'password.required' => 'Kata Sandi wajib diisi!',
-        ]);
+    // Validasi input
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+    ]);
 
-        // Menyiapkan data login dengan username dan password
-        $credentials = [
-            'username' => $request->username,
-            'password' => $request->password,
-        ];
-
-        // Proses autentikasi
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            // Arahkan berdasarkan role user
-            if ($user->role == 'admin') {
-                return redirect()->route('pageadmin.berandaadmin');
-            } elseif ($user->role == 'pengawas') {
-                return redirect()->route('pagepengawas.berandapengawas');
-            } else {
-                return redirect()->route('index'); // Halaman default jika role tidak sesuai
-            }
-        } else {
-            // Jika login gagal, kirimkan pesan kesalahan
-            return back()->with('error', 'Username atau Kata Sandi yang Anda masukkan salah.<br>Silakan coba lagi.');
-
-        }
+    // Cek kredensial
+    if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        // Login berhasil
+        return redirect()->route('admin.beranda');
     }
+
+    // Jika login gagal
+    return redirect()->route('masuk')->with('error', 'Username atau kata sandi salah');
+    }
+    
 
     /**
      * Proses logout pengguna.
@@ -80,4 +64,16 @@ class MasukController extends Controller
         // Redirect ke halaman login setelah logout
         return redirect()->route('index');
     }
+
+    public function handle(Request $request, Closure $next, ...$roles)
+    {
+    // Cek apakah user sudah login
+    if (Auth::check()) {
+        // Redirect ke halaman admin.beranda jika sudah login
+        return redirect()->route('admin.beranda');
+    }
+
+    // Jika belum login, arahkan ke halaman login
+    return redirect()->route('masuk');
+}
 }

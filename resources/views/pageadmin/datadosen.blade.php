@@ -1,124 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/foto/logo.png">
-  <title>
-    Data Dosen | E-Kinerja UMBJM
-  </title>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
-  <!-- Nepcha Analytics (nepcha.com) -->
-  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
-  <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <!--   Ikon Font Awesome   -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <!-- Tambahkan link ke Bootstrap JS dan Popper.js (untuk modal) -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
-
-</head>
+<x-headeradmin :title="'Data Dosen | E-Kinerja UMBJM'" />
 
 <body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="../assets/foto/logo.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold">E-Kinerja UMBJM</span>
-      </a>
-    </div>
-    <hr class="horizontal dark mt-0">
-
-    <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Utama</h6>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="berandaadmin.html">
-                <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <img src="../assets/foto/dashboard.png" alt="Government" width="30" height="30">
-                </div>
-                <span class="nav-link-text ms-1">Beranda</span>
-            </a>
-          </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">HALAMAN</h6>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link active" href="#">
-              <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                <img src="../assets/foto/dosenaktif.png" alt="Government" width="50" height="50">
-              </div>
-              <span class="nav-link-text ms-1">Data Dosen</span>
-            </a>
-          </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="datapengawas.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/profilpengawas.png" alt="Government" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Data Pengawas</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="penilaianpk.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/jabatan.png" alt="Government" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Data Jabatan</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="penilaianpk.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/pm.png" alt="Government" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Penilaian PM</span>
-          </a>
-        </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Akun</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="profiladmin.html">
-            <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <img src="../assets/foto/profil.png" alt="Infrastructure" width="30" height="30">
-            </div>
-            <span class="nav-link-text ms-1">Profil</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-    
-  </aside>
+  <x-navigasiadmin></x-navigasiadmin>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
@@ -127,7 +13,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Beranda</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Data Dosen</li>
           </ol>
           <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Data Dosen</h6>
         </nav>
@@ -153,7 +39,12 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <a href="../index.html" class="btn bg-gradient-info">Keluar</a>
+                    
+                      <!-- Form logout -->
+                      <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn bg-gradient-info">Keluar</button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -173,7 +64,8 @@
         <!-- Header dengan tombol Tambah Data -->
         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
           <h6 class="mb-0">Tabel Data Dosen</h6>
-          <a href="datadosen-tambah.html" class="btn btn-sm bg-gradient-info btn-sm mb-0">Tambah Data</a>
+          <!-- Ganti href dengan route Laravel -->
+          <a href="{{ route('tambahdatadosen') }}" class="btn btn-sm bg-gradient-info btn-sm mb-0">Tambah Data</a>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
