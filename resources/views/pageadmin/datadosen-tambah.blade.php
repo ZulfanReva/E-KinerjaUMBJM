@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<x-headeradmin :title="'Tambah Data Dosen | E-Kinerja UMBJM'" />
+<x-headeradmin :title="'Tambah Data Jabatan | E-Kinerja UMBJM'" />
 
 <body class="g-sidenav-show  bg-gray-100">
   <x-navigasiadmin></x-navigasiadmin>
@@ -13,9 +13,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Data Dosen</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Beranda</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Tambah Data Dosen</h6>
+          <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Tambah Data Jabatan</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -62,61 +62,59 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Tambah Data Dosen</h6>
+              <h6>Tambah Data Jabatan</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="p-4">
-                <form id="formContainer">
+                <form id="formContainer" action="{{ route('admin.datadosen.store') }}" method="POST">
+                  @csrf
                   <div id="formGroup">
-                    <!-- Form pertama -->
-                    <div class="form-group mb-4">
-                      <div class="row">
-                        <!-- Input Nama -->
-                        <div class="col-md-3 mb-3">
-                          <label for="nama" class="form-label">Nama</label>
-                          <input type="text" id="nama" class="form-control" placeholder="Masukkan Nama">
-                        </div>
-    
-                        <!-- Input NIDN -->
-                        <div class="col-md-3 mb-3">
-                          <label for="nidn" class="form-label">NIDN</label>
-                          <input type="text" id="nidn" class="form-control" placeholder="Masukkan NIDN">
-                        </div>
-    
-                        <!-- Dropdown Prodi -->
-                        <div class="col-md-3 mb-3">
-                          <label for="prodi" class="form-label">Prodi</label>
-                          <select id="prodi" class="form-select">
-                            <option selected>Pilih Prodi</option>
-                            <option value="1">Prodi 1</option>
-                            <option value="2">Prodi 2</option>
-                            <option value="3">Prodi 3</option>
-                          </select>
-                        </div>
-    
-                        <!-- Dropdown Status -->
-                        <div class="col-md-3 mb-3">
-                          <label for="status" class="form-label">Status</label>
-                          <select id="status" class="form-select">
-                            <option selected>Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                          </select>
-                        </div>
+                      <!-- Form pertama -->
+                      <div class="form-group mb-4">
+                          <div class="row">
+                              <!-- Input Nama -->
+                              <div class="col-md-3 mb-3">
+                                  <label for="nama" class="form-label">Nama</label>
+                                  <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan Nama" required>
+                              </div>
+              
+                              <!-- Input NIDN -->
+                              <div class="col-md-3 mb-3">
+                                  <label for="nidn" class="form-label">NIDN</label>
+                                  <input type="text" id="nidn" name="nidn" class="form-control" placeholder="Masukkan NIDN" required>
+                              </div>
+              
+                              <!-- Dropdown Prodi -->
+                              <div class="col-md-3 mb-3">
+                                  <label for="prodi" class="form-label">Prodi</label>
+                                  <select id="prodi" name="prodi" class="form-select" required>
+                                      <option value="" selected disabled>Pilih Prodi</option>
+                                      @foreach ($prodilist as $prodi)
+                                          <option value="{{ $prodi }}">{{ $prodi }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+              
+                              <!-- Dropdown Status -->
+                              <div class="col-md-3 mb-3">
+                                  <label for="status" class="form-label">Status</label>
+                                  <select id="status" name="status" class="form-select" required>
+                                      <option value="aktif">Aktif</option>
+                                      <option value="nonaktif">Nonaktif</option>
+                                  </select>
+                              </div>
+                          </div>
                       </div>
-                    </div>
                   </div>
-    
-                  <!-- Kontainer untuk Form Baru -->
-                  <div id="additionalForms"></div>
-    
+              
                   <div class="d-flex justify-content-between mt-4">
-                    <!-- Tombol Simpan -->
-                    <button type="submit" class="btn bg-gradient-info" id="saveButton">Simpan</button>
-    
-                    <!-- Tombol Tambah Form -->
-                    <button type="button" class="btn btn-outline-info" id="addFormButton">
-                      <i class="fa fa-plus"></i> Tambah Form
-                    </button>
+                      <!-- Tombol Simpan -->
+                      <button type="submit" class="btn bg-gradient-info" id="saveButton">Simpan</button>
+              
+                      <!-- Tombol Tambah Form -->
+                      <button type="button" class="btn btn-outline-info" id="addFormButton">
+                          <i class="fa fa-plus"></i> Tambah Form
+                      </button>
                   </div>
                 </form>
               </div>
@@ -131,74 +129,43 @@
       const addFormButton = document.getElementById('addFormButton');
       const additionalFormsContainer = document.getElementById('additionalForms');
     
-      // Event listener untuk tombol tambah
+      // Event listener untuk tombol tambah form baru
       addFormButton.addEventListener('click', () => {
-        // Membuat elemen form baru
+        // Membuat elemen form baru untuk jabatan
         const newForm = document.createElement('div');
         newForm.classList.add('form-group', 'mb-4');
         newForm.innerHTML = `
           <div class="row">
-            <!-- Input Nama -->
-            <div class="col-md-3 mb-3">
-              <label for="nama" class="form-label">Nama</label>
-              <input type="text" class="form-control" placeholder="Masukkan Nama">
-            </div>
-    
-            <!-- Input NIDN -->
-            <div class="col-md-3 mb-3">
-              <label for="nidn" class="form-label">NIDN</label>
-              <input type="text" class="form-control" placeholder="Masukkan NIDN">
-            </div>
-    
-            <!-- Dropdown Prodi -->
-            <div class="col-md-3 mb-3">
-              <label for="prodi" class="form-label">Prodi</label>
-              <select class="form-select">
-                <option selected>Pilih Prodi</option>
-                <option value="1">Prodi 1</option>
-                <option value="2">Prodi 2</option>
-                <option value="3">Prodi 3</option>
-              </select>
-            </div>
-    
-            <!-- Dropdown Status -->
-            <div class="col-md-3 mb-3">
-              <label for="status" class="form-label">Status</label>
-              <select class="form-select">
-                <option selected>Aktif</option>
-                <option value="nonaktif">Nonaktif</option>
-              </select>
+            <!-- Input Jabatan -->
+            <div class="col-md-6 mb-3">
+              <label for="jabatan" class="form-label">Jabatan</label>
+              <input type="text" class="form-control" placeholder="Masukkan Jabatan" required>
             </div>
           </div>
         `;
-    
+        
         // Menambahkan form baru ke kontainer
         additionalFormsContainer.appendChild(newForm);
       });
     
-      // Menangani submit tombol simpan
+      // Menangani tombol simpan untuk submit data
       document.getElementById('formContainer').addEventListener('submit', function(event) {
-        event.preventDefault(); // Mencegah form disubmit secara default
+        event.preventDefault(); // Mencegah form dikirim secara default
     
-        // Redirection ke halaman sebelumnya (datadosen.html)
-        window.location.href = "datadosen.html";
+        // Ambil semua input Jabatan
+        const jabatanInputs = document.querySelectorAll('#formContainer input[type="text"]');
+        
+        jabatanInputs.forEach((input, index) => {
+          // Logika untuk menyimpan jabatan (misalnya menggunakan AJAX atau lainnya)
+          alert("Data Jabatan '" + input.value + "' berhasil disimpan!");
+    
+          // Setelah disimpan, kosongkan form
+          input.value = ''; 
+        });
+    
+        // Redirection ke halaman data jabatan
+        window.location.href = "datajabatan.html";
       });
-    </script>
-    
-      
-
-    <script>
-      function editData(id) {
-        alert("Edit data dengan ID: " + id);
-        // Logika edit data
-      }
-    
-      function hapusData(id) {
-        if (confirm("Apakah Anda yakin ingin menghapus data dengan ID: " + id + "?")) {
-          alert("Data dengan ID " + id + " berhasil dihapus.");
-          // Logika hapus data
-        }
-      }
     </script>
     
   </main>

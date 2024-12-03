@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('dosen', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->integer('nidn');
-            $table->string('program_studi');
-            $table->string('status');
+            $table->string('nidn')->unique();
+            $table->string('prodi');
+            $table->enum('status', ['aktif', 'nonaktif']);
             $table->timestamps();
         });
     }

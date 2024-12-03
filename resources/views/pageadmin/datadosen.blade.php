@@ -65,7 +65,7 @@
         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
           <h6 class="mb-0">Tabel Data Dosen</h6>
           <!-- Ganti href dengan route Laravel -->
-          <a href="{{ route('tambahdatadosen') }}" class="btn btn-sm bg-gradient-info btn-sm mb-0">Tambah Data</a>
+          <a href="{{ route('admin.datadosen-tambah') }}" class="btn btn-sm bg-gradient-info btn-sm mb-0">Tambah Data</a>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">

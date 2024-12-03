@@ -51,6 +51,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.dataprodi*') ? 'active' : '' }}" href="{{ route('admin.dataprodi.index') }}">
+                    <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('assets/foto/prodi.png') }}" alt="Data Prodi" width="50" height="50">
+                    </div>
+                    <span class="nav-link-text ms-1">Data Prodi</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.penilaianpm') ? 'active' : '' }}" href="{{ route('admin.penilaianpm') }}">
                     <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('assets/foto/pm.png') }}" alt="Penilaian PM" width="50" height="50">
@@ -73,4 +81,4 @@
             </li>
         </ul>
     </div>
-  </aside>
+</aside>
