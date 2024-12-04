@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_dosen');
             $table->string('nidn')->unique();
-            $table->unsignedBigInteger('prodi_id'); // Mengganti kolom 'prodi' menjadi 'prodi_id'
+            $table->foreignId('prodi_id')->constrained('prodis')->onDelete('cascade');
             $table->enum('status', ['aktif', 'nonaktif']);
             $table->timestamps();
 

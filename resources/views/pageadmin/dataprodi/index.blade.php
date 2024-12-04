@@ -84,38 +84,39 @@
     </div>
 
     <!-- Modal Konfirmasi Hapus -->
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true" data-backdrop="static">
       <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  Apakah Anda yakin ingin menghapus data prodi ini?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                  <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya</button>
+              </div>
           </div>
-          <div class="modal-body">
-            Apakah Anda yakin ingin menghapus data prodi ini?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya</button>
-          </div>
-        </div>
       </div>
     </div>
+
   </div>
 
   <script>
     let selectedDataId = null;
-
+  
     // Fungsi untuk menampilkan modal hapus dan menyimpan ID yang dipilih
     function hapusData(id) {
       selectedDataId = id; // Menyimpan ID data yang akan dihapus
       const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
       modal.show(); // Menampilkan modal
     }
-
+  
     // Event handler untuk konfirmasi hapus
     document.getElementById('confirmDeleteBtn').onclick = () => {
-      fetch(`/admin/dataprodi/${selectedDataId}`, {
+      fetch(`/admin/datadosen/${selectedDataId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -138,9 +139,9 @@
           
           // Menampilkan pesan sukses
           alert(data.message);
-
+  
           // Menyegarkan halaman atau mengarahkannya ke halaman index
-          window.location.href = "{{ route('admin.dataprodi.index') }}";
+          window.location.href = "{{ route('admin.datadosen.index') }}";
         } else {
           alert("Gagal menghapus data: " + data.message); // Tampilkan pesan dari server jika ada
         }
@@ -150,19 +151,18 @@
         alert('Terjadi kesalahan saat menghapus data: ' + error.message); // Menampilkan pesan error yang lebih jelas
       });
     };
+  
+    // Event untuk menghapus backdrop setelah modal ditutup
+    document.getElementById('confirmDeleteModal').addEventListener('hidden.bs.modal', function () {
+      // Menghapus backdrop setelah modal ditutup
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
+    });
   </script>
 
-  <footer class="footer pt-3">
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-lg-between">
-        <div class="col-lg-6 mb-lg-0 mb-4">
-          <div class="copyright text-center text-sm text-muted text-lg-start">
-            © <script>document.write(new Date().getFullYear())</script>, created by <a href="#" class="font-weight-bold" target="_blank">Universitas Muhammadiyah Banjarmasin</a>.
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <x-footeradminpengawas></x-footeradminpengawas>
   
 </main>
 

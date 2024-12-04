@@ -74,7 +74,7 @@
                       <td class="text-start">
                         <div class="d-flex px-2 py-1">
                           <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">{{ $dosen->nama }}</h6>
+                            <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
                           </div>
                         </div>
                       </td>
@@ -82,8 +82,8 @@
                         <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
                       </td>
                       <td class="text-start">
-                        <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi }}</p>
-                      </td>
+                        <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi }}</p>
+                    </td>                    
                       <td class="align-middle text-center text-sm">
                         <span class="badge bg-gradient-{{ $dosen->status === 'aktif' ? 'success' : 'danger' }} btn-sm mb-0">
                           {{ ucfirst($dosen->status) }}
@@ -93,13 +93,14 @@
                         <a href="{{ route('admin.datadosen.edit', $dosen->id) }}" class="btn btn-sm bg-gradient-info me-2">
                           <i class="fa fa-edit fa-xs"></i>
                         </a>
-                        <form action="{{ route('admin.datadosen.destroy', $dosen->id) }}" method="POST" style="display: inline;">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-sm bg-gradient-danger me-2">
+                          <!-- Tombol hapus dengan modal konfirmasi -->
+                          <button 
+                            class="btn btn-sm bg-gradient-danger me-2" 
+                            onclick="hapusData({{ $dosen->id }})" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#confirmDeleteModal">
                             <i class="fa fa-trash fa-xs"></i>
                           </button>
-                        </form>
                       </td>
                     </tr>
                     @empty
@@ -116,10 +117,89 @@
           </div>
         </div>
       </div>
+
+      
+      <!-- Modal Konfirmasi Hapus -->
+      <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus data dosen ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Footer -->
     <x-footeradminpengawas></x-footeradminpengawas>
+
+    <script>
+      let selectedDataId = null;
+    
+      // Fungsi untuk menampilkan modal hapus dan menyimpan ID yang dipilih
+      function hapusData(id) {
+        selectedDataId = id; // Menyimpan ID data yang akan dihapus
+        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        modal.show(); // Menampilkan modal
+      }
+    
+      // Event handler untuk konfirmasi hapus
+      document.getElementById('confirmDeleteBtn').onclick = () => {
+        fetch(`/admin/datadosen/${selectedDataId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          }
+        })
+        .then(response => {
+          // Pastikan status response adalah OK
+          if (response.ok) {
+            return response.json(); // Mengambil JSON dari respons jika statusnya 200-299
+          } else {
+            throw new Error('Gagal menghapus data. Status: ' + response.status);
+          }
+        })
+        .then(data => {
+          if (data.success) {
+            // Menyembunyikan modal setelah penghapusan berhasil
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+            modal.hide();
+            
+            // Menampilkan pesan sukses
+            alert(data.message);
+    
+            // Menyegarkan halaman atau mengarahkannya ke halaman index
+            window.location.href = "{{ route('admin.datadosen.index') }}";
+          } else {
+            alert("Gagal menghapus data: " + data.message); // Tampilkan pesan dari server jika ada
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Terjadi kesalahan saat menghapus data: ' + error.message); // Menampilkan pesan error yang lebih jelas
+        });
+      };
+    
+      // Event untuk menghapus backdrop setelah modal ditutup
+      document.getElementById('confirmDeleteModal').addEventListener('hidden.bs.modal', function () {
+        // Menghapus backdrop setelah modal ditutup
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+          backdrop.remove();
+        }
+      });
+    </script>
 
   </main>
 </body>

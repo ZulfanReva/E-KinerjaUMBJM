@@ -62,7 +62,7 @@
                         <div class="form-group row mb-3">
                             <div class="col-md-6 mb-3">
                                 <label for="prodi[]" class="form-label">Prodi</label>
-                                <select name="prodi[]" class="form-select" required>
+                                <select name="prodi_id[]" class="form-select" required>
                                     <option value="" selected disabled>Pilih Prodi</option>
                                     @foreach ($prodis as $prodi)
                                         <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}</option>
@@ -83,11 +83,18 @@
                     <div id="additionalForms"></div>
                 
                     <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn bg-gradient-info">Simpan</button>
+                        <!-- Tombol Simpan dan Kembali (bersebelahan) -->
+                        <div class="d-flex" style="gap: 10px;"> <!-- Menambahkan jarak menggunakan gap -->
+                            <button type="submit" class="btn bg-gradient-info">Simpan</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='{{ route('admin.datadosen.index') }}'">Kembali</button>
+                        </div>
+                    
+                        <!-- Tombol Tambah Form di sebelah kanan -->
                         <button type="button" class="btn btn-outline-info" id="addFormButton">
                             <i class="fa fa-plus"></i> Tambah Form
                         </button>
                     </div>
+                    
                   </form>                
                 </div>
               </div>
