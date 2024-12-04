@@ -15,12 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama_dosen');
             $table->string('nidn')->unique();
-            $table->foreignId('prodi_id')->constrained('prodis')->onDelete('cascade');
+            $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade');
             $table->enum('status', ['aktif', 'nonaktif']);
             $table->timestamps();
-
-            // Menambahkan foreign key yang menghubungkan prodi_id dengan id di tabel prodi
-            $table->foreign('prodi_id')->references('id')->on('prodi')->onDelete('cascade');
         });
     }
 

@@ -111,7 +111,7 @@ class DataDosenController extends Controller
         if (!$dosen) {
             return response()->json([
                 'success' => false,
-                'message' => 'Data Prodi tidak ditemukan.'
+                'message' => 'Data Dosen tidak ditemukan.'
             ], 404);  // Mengembalikan error 404 jika data tidak ditemukan
         }
 
@@ -121,7 +121,7 @@ class DataDosenController extends Controller
         // Mengirimkan pesan sukses dalam format JSON
         return response()->json([
             'success' => true,
-            'message' => 'Data Prodi berhasil dihapus!'
+            'message' => 'Data Dosen berhasil dihapus!'
         ]);
     }
 }

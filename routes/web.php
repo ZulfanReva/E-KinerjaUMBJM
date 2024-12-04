@@ -7,6 +7,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\DataDosenController;
+use App\Http\Controllers\DataJabatanController;
 use App\Http\Controllers\DataJatabanController;
 use App\Http\Controllers\DataPengawasController;
 
@@ -45,28 +46,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     'update' => 'datadosen.update',
     'destroy' => 'datadosen.destroy',
     ]);
-
-    // Data Jabatan menggunakan resource route
-    Route::resource('datajabatan', DataJatabanController::class)->names([
-    'index' => 'datajabatan.index',
-    'create' => 'datajabatan.create',
-    'store' => 'datajabatan.store',
-    'show' => 'datajabatan.show',
-    'edit' => 'datajabatan.edit',
-    'update' => 'datajabatan.update',
-    'destroy' => 'datajabatan.destroy',
-    ]);
-
-    // Data Prodi menggunakan resource route
-    Route::resource('dataprodi', ProdiController::class)->names([
-        'index' => 'dataprodi.index',
-        'create' => 'dataprodi.create',
-        'store' => 'dataprodi.store',
-        'show' => 'dataprodi.show',
-        'edit' => 'dataprodi.edit',
-        'update' => 'dataprodi.update',
-        'destroy' => 'dataprodi.destroy',
-    ]);
     
     // Data Pengawas menggunakan resource route
     Route::resource('datapengawas', DataPengawasController::class)->names([
@@ -77,6 +56,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     'edit' => 'datapengawas.edit',
     'update' => 'datapengawas.update',
     'destroy' => 'datapengawas.destroy',
+    ]);
+
+    // Data Jabatan menggunakan resource route
+    Route::resource('datajabatan', DataJabatanController::class)->names([
+        'index' => 'datajabatan.index',
+        'create' => 'datajabatan.create',
+        'store' => 'datajabatan.store',
+        'show' => 'datajabatan.show',
+        'edit' => 'datajabatan.edit',
+        'update' => 'datajabatan.update',
+        'destroy' => 'datajabatan.destroy',
+        ]);
+
+    // Data Prodi menggunakan resource route
+    Route::resource('dataprodi', ProdiController::class)->names([
+        'index' => 'dataprodi.index',
+        'create' => 'dataprodi.create',
+        'store' => 'dataprodi.store',
+        'show' => 'dataprodi.show',
+        'edit' => 'dataprodi.edit',
+        'update' => 'dataprodi.update',
+        'destroy' => 'dataprodi.destroy',
     ]);
 
     // Penilaian Profile Matching

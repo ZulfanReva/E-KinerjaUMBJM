@@ -145,59 +145,57 @@
 
     <script>
       let selectedDataId = null;
-    
-      // Fungsi untuk menampilkan modal hapus dan menyimpan ID yang dipilih
+  
+      // Fungsi untuk menyimpan ID data yang dipilih untuk dihapus
       function hapusData(id) {
-        selectedDataId = id; // Menyimpan ID data yang akan dihapus
-        const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
-        modal.show(); // Menampilkan modal
+          selectedDataId = id; // Simpan ID data
       }
-    
+  
       // Event handler untuk konfirmasi hapus
       document.getElementById('confirmDeleteBtn').onclick = () => {
-        fetch(`/admin/datadosen/${selectedDataId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-          }
-        })
-        .then(response => {
-          // Pastikan status response adalah OK
-          if (response.ok) {
-            return response.json(); // Mengambil JSON dari respons jika statusnya 200-299
-          } else {
-            throw new Error('Gagal menghapus data. Status: ' + response.status);
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            // Menyembunyikan modal setelah penghapusan berhasil
-            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
-            modal.hide();
-            
-            // Menampilkan pesan sukses
-            alert(data.message);
-    
-            // Menyegarkan halaman atau mengarahkannya ke halaman index
-            window.location.href = "{{ route('admin.datadosen.index') }}";
-          } else {
-            alert("Gagal menghapus data: " + data.message); // Tampilkan pesan dari server jika ada
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Terjadi kesalahan saat menghapus data: ' + error.message); // Menampilkan pesan error yang lebih jelas
-        });
+          fetch(`/admin/datadosen/${selectedDataId}`, {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              }
+          })
+          .then(response => {
+              // Pastikan status response adalah OK
+              if (response.ok) {
+                  return response.json(); // Mengambil JSON dari respons jika statusnya 200-299
+              } else {
+                  throw new Error('Gagal menghapus data. Status: ' + response.status);
+              }
+          })
+          .then(data => {
+              if (data.success) {
+                  // Sembunyikan modal secara manual
+                  const modalElement = document.getElementById('confirmDeleteModal');
+                  modalElement.style.display = 'none'; // Sembunyikan modal
+                  modalElement.classList.remove('show'); // Hapus kelas 'show'
+  
+                  // Menampilkan pesan sukses
+                  alert(data.message);
+  
+                  // Menyegarkan halaman atau mengarahkan ke halaman index
+                  window.location.href = "{{ route('admin.datadosen.index') }}";
+              } else {
+                  alert("Gagal menghapus data: " + data.message); // Tampilkan pesan dari server jika ada
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Terjadi kesalahan saat menghapus data: ' + error.message); // Menampilkan pesan error yang lebih jelas
+          });
       };
-    
-      // Event untuk menghapus backdrop setelah modal ditutup
+  
+      // Menghapus backdrop secara manual setelah modal ditutup
       document.getElementById('confirmDeleteModal').addEventListener('hidden.bs.modal', function () {
-        // Menghapus backdrop setelah modal ditutup
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (backdrop) {
-          backdrop.remove();
-        }
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+              backdrop.remove();
+          }
       });
     </script>
 
