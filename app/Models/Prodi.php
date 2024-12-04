@@ -11,5 +11,4 @@ class Prodi extends Model
 
     protected $table = 'prodi'; // Nama tabel di database
     protected $fillable = ['nama_prodi']; // Kolom-kolom yang bisa diisi secara massal
-    protected $primarykey = 'id';
 }

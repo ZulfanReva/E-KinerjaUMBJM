@@ -26,21 +26,19 @@ class ProdiController extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-    // Validasi input sebagai array
-    $validatedData = $request->validate([
-        'nama_prodi' => 'required|string|max:20', // Pastikan 'nama_prodi' adalah array
-        // 'nama_prodi.*' => 'required|string|max:255', // Validasi setiap elemen dalam array
+    // Validasi input
+    $request->validate([
+        'nama_prodi' => 'required|array',
+        'nama_prodi.*' => 'required|string|max:255',
     ]);
 
-    // Simpan setiap nama prodi ke database
-    foreach ($validatedData['nama_prodi'] as $namaProdi) {
-        \App\Models\Prodi::create([
-            'nama_prodi' => $namaProdi,
-        ]);
+    // Simpan data prodi
+    foreach ($request->nama_prodi as $namaProdi) {
+        Prodi::create(['nama_prodi' => $namaProdi]);
     }
 
-    // Redirect ke halaman tertentu dengan pesan sukses
-    return redirect()->route('dataprodi.index')->with('success', 'Data berhasil disimpan!');
+    // Setelah berhasil, redirect ke halaman daftar prodi
+    return redirect()->route('admin.dataprodi.index')->with('success', 'Data Prodi berhasil disimpan!');
     }
 
     // Menampilkan detail data
@@ -65,7 +63,25 @@ class ProdiController extends Controller
     // Menghapus data
     public function destroy($id)
     {
-        // Hapus data
-        return redirect()->route('pageadmin.dataprodi.index');
+        // Mencari data berdasarkan ID
+        $prodi = Prodi::find($id);
+
+        // Cek apakah data ditemukan
+        if (!$prodi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Prodi tidak ditemukan.'
+            ], 404);  // Mengembalikan error 404 jika data tidak ditemukan
+        }
+
+        // Menghapus data
+        $prodi->delete();
+
+        // Mengirimkan pesan sukses dalam format JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Prodi berhasil dihapus!'
+        ]);
     }
+
 }

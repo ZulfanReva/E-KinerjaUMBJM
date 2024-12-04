@@ -29,6 +29,12 @@
       </div>
     </nav>
 
+    @if(session('success'))
+      <div class="alert alert-success">
+          {{ session('success') }}
+      </div>
+    @endif
+
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
@@ -57,9 +63,12 @@
                           </div>
                         </td>
                         <td class="align-middle text-center">
+                          <!-- Tombol hapus dengan modal konfirmasi -->
                           <button 
                             class="btn btn-sm bg-gradient-danger me-2" 
-                            onclick="hapusData({{ $prodi->id }})">
+                            onclick="hapusData({{ $prodi->id }})" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#confirmDeleteModal">
                             <i class="fa fa-trash fa-xs"></i>
                           </button>
                         </td>
@@ -83,7 +92,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Apakah Anda yakin ingin menghapus jabatan ini?
+            Apakah Anda yakin ingin menghapus data prodi ini?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
@@ -93,22 +102,53 @@
       </div>
     </div>
   </div>
-  
+
   <script>
     let selectedDataId = null;
 
+    // Fungsi untuk menampilkan modal hapus dan menyimpan ID yang dipilih
     function hapusData(id) {
       selectedDataId = id; // Menyimpan ID data yang akan dihapus
       const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
       modal.show(); // Menampilkan modal
     }
 
+    // Event handler untuk konfirmasi hapus
     document.getElementById('confirmDeleteBtn').onclick = () => {
-      alert("Data dengan ID " + selectedDataId + " berhasil dihapus.");
-      const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
-      modal.hide();
-      
-      window.location.href = "datajabatan.html"; // Arahkan kembali ke halaman daftar data
+      fetch(`/admin/dataprodi/${selectedDataId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        }
+      })
+      .then(response => {
+        // Pastikan status response adalah OK
+        if (response.ok) {
+          return response.json(); // Mengambil JSON dari respons jika statusnya 200-299
+        } else {
+          throw new Error('Gagal menghapus data. Status: ' + response.status);
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          // Menyembunyikan modal setelah penghapusan berhasil
+          const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+          modal.hide();
+          
+          // Menampilkan pesan sukses
+          alert(data.message);
+
+          // Menyegarkan halaman atau mengarahkannya ke halaman index
+          window.location.href = "{{ route('admin.dataprodi.index') }}";
+        } else {
+          alert("Gagal menghapus data: " + data.message); // Tampilkan pesan dari server jika ada
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menghapus data: ' + error.message); // Menampilkan pesan error yang lebih jelas
+      });
     };
   </script>
 

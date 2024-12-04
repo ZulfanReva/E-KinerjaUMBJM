@@ -76,7 +76,7 @@
                           <div class="row">
                               <div class="col-md-6 mb-3">
                                   <label for="nama_prodi[]" class="form-label">Nama Prodi</label>
-                                  <input type="text" name="nama_prodi" class="form-control" placeholder="Masukkan Nama Prodi" required>
+                                  <input type="text" name="nama_prodi[]" class="form-control" placeholder="Masukkan Nama Prodi" required>
                               </div>
                           </div>
                       </div>
@@ -97,74 +97,77 @@
     </div>
     
     <script>
-      // Seleksi elemen yang diperlukan
-      const formContainer = document.getElementById('formContainer');
-      const addFormButton = document.getElementById('addFormButton');
-      const additionalFormsContainer = document.getElementById('additionalForms');
-  
-      // Event untuk tombol submit
-      formContainer.addEventListener('submit', function(event) {
-          event.preventDefault(); // Mencegah submit default
-  
-          // Mengambil semua input dengan nama "nama_prodi[]"
-          const prodiInputs = document.querySelectorAll('input[name="nama_prodi[]"]');
-          let prodiData = [];
-  
-          // Ambil nilai dari setiap input, validasi jika kosong
-          prodiInputs.forEach(input => {
-              if (input.value.trim() === "") {
-                  alert("Semua field harus diisi!");
-                  throw new Error("Field kosong ditemukan");
-              }
-              prodiData.push(input.value);
-          });
-  
-          // Buat objek data untuk dikirim
-          const data = {
-              nama_prodi: prodiData,
-          };
-  
-          // Kirim data ke server menggunakan fetch
-          fetch("{{ route('admin.dataprodi.store') }}", {
-              method: "POST",
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-              },
-              body: JSON.stringify(data),
-          })
-          .then(response => {
-              if (!response.ok) {
-                  return response.json().then(err => {
-                      throw new Error(err.message || "Terjadi kesalahan saat menyimpan data.");
-                  });
-              }
-              return response.json();
-          })
-          .then(data => {
-              alert("Data Prodi berhasil disimpan!");
-              window.location.href = "{{ route('admin.dataprodi.index') }}"; // Redirect ke halaman index
-          })
-          .catch(error => {
-              console.error("Error:", error);
-              alert(`Gagal menyimpan data: ${error.message}`);
-          });
-      });
-  
-      // Event untuk menambah form baru
-      addFormButton.addEventListener('click', () => {
-          const newForm = document.createElement('div');
-          newForm.classList.add('form-group', 'mb-4');
-          newForm.innerHTML = `
-              <div class="row">
-                  <div class="col-md-6 mb-3">
-                      <label for="nama_prodi[]" class="form-label">Nama Prodi</label>
-                      <input type="text" name="nama_prodi[]" class="form-control" placeholder="Masukkan Nama Prodi" required>
-                  </div>
-              </div>
-          `;
-          additionalFormsContainer.appendChild(newForm);
-      });
+      document.getElementById('addFormButton').addEventListener('click', () => {
+    const newForm = document.createElement('div');
+    newForm.classList.add('form-group', 'mb-4');
+    newForm.innerHTML = `
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nama_prodi[]" class="form-label">Nama Prodi</label>
+                <input type="text" name="nama_prodi[]" class="form-control" placeholder="Masukkan Nama Prodi" required>
+            </div>
+        </div>
+    `;
+    document.getElementById('additionalForms').appendChild(newForm);
+    });
+
+    // Seleksi elemen yang diperlukan
+    const formContainer = document.getElementById('formContainer');
+
+    // Event untuk tombol submit
+    formContainer.addEventListener('submit', function (event) {
+        event.preventDefault(); // Mencegah submit default
+
+        // Mengambil semua input dengan nama "nama_prodi[]"
+        const prodiInputs = document.querySelectorAll('input[name="nama_prodi[]"]');
+        let prodiData = [];
+
+        // Ambil nilai dari setiap input, validasi jika kosong
+        prodiInputs.forEach(input => {
+            if (input.value.trim() === "") {
+                alert("Semua field harus diisi!");
+                throw new Error("Field kosong ditemukan");
+            }
+            prodiData.push(input.value);
+        });
+
+        // Buat objek data untuk dikirim
+        const data = {
+            nama_prodi: prodiData,
+        };
+
+        // Kirim data ke server menggunakan fetch
+        fetch("{{ route('admin.dataprodi.store') }}", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            // Validasi apakah response adalah JSON atau redirect
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                return response.json();
+            } else if (response.redirected) {
+                window.location.href = response.url; // Redirect jika diperlukan
+                return;
+            } else {
+                throw new Error("Respon server tidak valid.");
+            }
+        })
+        .then(data => {
+            if (data && data.message) {
+                alert(data.message); // Tampilkan pesan dari server jika ada
+            }
+            alert("Data Prodi berhasil disimpan!"); // Pesan sukses tambahan
+            window.location.href = "{{ route('admin.dataprodi.index') }}"; // Redirect ke halaman index
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert(`Gagal menyimpan data: ${error.message}`);
+        });
+    });
     </script>
     
   </main>
