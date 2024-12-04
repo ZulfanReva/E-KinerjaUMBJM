@@ -7,6 +7,8 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\DataDosenController;
+use App\Http\Controllers\DataJatabanController;
+use App\Http\Controllers\DataPengawasController;
 
 // Route untuk halaman beranda
 Route::get('/', [BerandaController::class, 'index'])->name('index');
@@ -33,14 +35,27 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Halaman beranda admin
     Route::view('/beranda', 'pageadmin.berandaadmin')->name('beranda');
     
-    // Data Dosen
-    Route::get('/datadosen', [DataDosenController::class, 'index'])->name('datadosen'); // List Data Dosen
-    Route::get('/datadosen/tambah', [DataDosenController::class, 'create'])->name('datadosen-tambah'); // Form Tambah Data
-    Route::post('/datadosen', [DataDosenController::class, 'store'])->name('datadosen.store'); // Proses Tambah Data
-    
-    // Data Jabatan
-    Route::view('/datajabatan', 'pageadmin.datajabatan')->name('datajabatan');
-    Route::view('/datajabatan/tambah', 'pageadmin.datajabatan-tambah')->name('datajabatan.tambah');
+    // Data Dosen menggunakan resource route
+    Route::resource('datadosen', DataDosenController::class)->names([
+    'index' => 'datadosen.index',
+    'create' => 'datadosen.create',
+    'store' => 'datadosen.store',
+    'show' => 'datadosen.show',
+    'edit' => 'datadosen.edit',
+    'update' => 'datadosen.update',
+    'destroy' => 'datadosen.destroy',
+    ]);
+
+    // Data Jabatan menggunakan resource route
+    Route::resource('datajabatan', DataJatabanController::class)->names([
+    'index' => 'datajabatan.index',
+    'create' => 'datajabatan.create',
+    'store' => 'datajabatan.store',
+    'show' => 'datajabatan.show',
+    'edit' => 'datajabatan.edit',
+    'update' => 'datajabatan.update',
+    'destroy' => 'datajabatan.destroy',
+    ]);
 
     // Data Prodi menggunakan resource route
     Route::resource('dataprodi', ProdiController::class)->names([
@@ -53,10 +68,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         'destroy' => 'dataprodi.destroy',
     ]);
     
-    // Data Pengawas
-    Route::view('/datapengawas', 'pageadmin.datapengawas')->name('datapengawas');
-    Route::view('/datapengawas/tambah', 'pageadmin.datapengawas-tambah')->name('datapengawas.tambah');
-    Route::view('/datapengawas/edit', 'pageadmin.datapengawas-edit')->name('datapengawas.edit');
+    // Data Pengawas menggunakan resource route
+    Route::resource('datapengawas', DataPengawasController::class)->names([
+    'index' => 'datapengawas.index',
+    'create' => 'datapengawas.create',
+    'store' => 'datapengawas.store',
+    'show' => 'datapengawas.show',
+    'edit' => 'datapengawas.edit',
+    'update' => 'datapengawas.update',
+    'destroy' => 'datapengawas.destroy',
+    ]);
 
     // Penilaian Profile Matching
     Route::view('/penilaianpm', 'pageadmin.penilaianpm')->name('penilaianpm');

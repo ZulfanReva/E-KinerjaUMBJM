@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
 
-class Dosen extends Model
+    class Dosen extends Model
 {
-    use HasFactory;
+    protected $fillable = ['nama_dosen', 'nidn', 'prodi_id', 'status'];
 
-    protected $table = 'dosen';
-    protected $fillable = ['nama', 'nidn', 'prodi', 'status'];
+    public function prodi()
+    {
+        return $this->belongsTo(Prodi::class); // Relasi ke model Prodi
+    }
 }

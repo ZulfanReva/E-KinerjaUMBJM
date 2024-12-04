@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('dosen', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama_dosen');
             $table->string('nidn')->unique();
-            $table->string('prodi');
+            $table->unsignedBigInteger('prodi_id'); // Mengganti kolom 'prodi' menjadi 'prodi_id'
             $table->enum('status', ['aktif', 'nonaktif']);
             $table->timestamps();
+
+            // Menambahkan foreign key yang menghubungkan prodi_id dengan id di tabel prodi
+            $table->foreign('prodi_id')->references('id')->on('prodi')->onDelete('cascade');
         });
     }
 

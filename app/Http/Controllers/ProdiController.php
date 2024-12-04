@@ -11,11 +11,11 @@ class ProdiController extends Controller
     public function index()
     {
         // Mengambil semua data Prodi
-    $prodis = Prodi::all();
+        $prodis = Prodi::all();
     
-    // Mengirim data Prodi ke tampilan
-    return view('pageadmin.dataprodi.index', compact('prodis'));
-    }
+        // Mengirim data Prodi ke tampilan
+        return view('pageadmin.dataprodi.index', compact('prodis'));
+        }
 
     // Menampilkan form tambah data
     public function create()

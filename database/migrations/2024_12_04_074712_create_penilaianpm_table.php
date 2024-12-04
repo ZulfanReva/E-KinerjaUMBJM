@@ -9,21 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('penilaian_pm', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dosen_id')->constrained('dosen')->cascadeOnDelete();
-            $table->foreignId('admin_id')->constrained('admin')->cascadeOnDelete();
-            $table->foreignId('penialaincf_id')->constrained('penilaian_cf')->cascadeOnDelete();
-            $table->foreignId('penilaiansf_id')->constrained('penilaian_sf')->cascadeOnDelete();
-            $table->date('tanggal_penilaian');
+            $table->foreignId('id_admin')->constrained('users');
+            $table->foreignId('id_penilaiancf')->constrained('penilaian_cf');
+            $table->foreignId('id_penilaiansf')->constrained('penilaian_sf');
+            $table->foreignId('id_dosen')->constrained('dosen');
+            $table->string('periode');
             $table->text('umpan_balik');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('penilaian_pm');
     }

@@ -27,7 +27,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Halaman</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.datadosen*') ? 'active' : '' }}" href="{{ route('admin.datadosen') }}">
+                <a class="nav-link {{ request()->routeIs('admin.datadosen*') ? 'active' : '' }}" href="{{ route('admin.datadosen.index') }}">
                     <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('assets/foto/dosenaktif.png') }}" alt="Data Dosen" width="50" height="50">
                     </div>
@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.datapengawas*') ? 'active' : '' }}" href="{{ route('admin.datapengawas') }}">
+                <a class="nav-link {{ request()->routeIs('admin.datapengawas*') ? 'active' : '' }}" href="{{ route('admin.datapengawas.index') }}">
                     <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('assets/foto/profilpengawas.png') }}" alt="Data Pengawas" width="50" height="50">
                     </div>
@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.datajabatan*') ? 'active' : '' }}" href="{{ route('admin.datajabatan') }}">
+                <a class="nav-link {{ request()->routeIs('admin.datajabatan*') ? 'active' : '' }}" href="{{ route('admin.datajabatan.index') }}">
                     <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('assets/foto/jabatan.png') }}" alt="Data Jabatan" width="50" height="50">
                     </div>
