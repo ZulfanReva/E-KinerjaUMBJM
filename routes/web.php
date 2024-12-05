@@ -9,7 +9,9 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\DataDosenController;
 use App\Http\Controllers\DataJabatanController;
 use App\Http\Controllers\DataJatabanController;
+use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\DataPengawasController;
+use App\Http\Controllers\ProfilPengawasController;
 
 // Route untuk halaman beranda
 Route::get('/', [BerandaController::class, 'index'])->name('index');
@@ -20,7 +22,12 @@ Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 // Route untuk halaman login
 Route::get('/masuk', function () {
     if (Auth::check()) {
-        return redirect()->route('admin.beranda'); // Redirect ke beranda admin jika sudah login
+        // Cek peran pengguna
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.beranda'); // Redirect ke beranda admin
+        } elseif (Auth::user()->role === 'pengawas') {
+            return redirect()->route('pengawas.beranda'); // Redirect ke beranda pengawas
+        }
     }
     return view('masuk'); // Ganti dengan 'masuk' sesuai nama file tampilan Anda
 })->name('masuk');
@@ -84,10 +91,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::view('/penilaianpm', 'pageadmin.penilaianpm')->name('penilaianpm');
 
     // Profil Admin
-    Route::view('/profiladmin', 'pageadmin.profiladmin')->name('profiladmin');
+    Route::get('/profiladmin', [ProfilAdminController::class, 'index'])->name('profiladmin');
 });
 
-// Route untuk halaman pengawas (Proteksi dengan middleware auth)
-Route::get('/pengawas/beranda', function () {
-    return view('pagepengawas.berandapengawas');
-})->name('pagepengawas.berandapengawas')->middleware('auth');
+Route::middleware(['auth'])->prefix('pengawas')->name('pengawas.')->group(function () {
+    // Halaman beranda pengawas
+    Route::view('/beranda', 'pagepengawas.berandapengawas')->name('beranda');
+    
+
+    // Penilaian Profile Matching
+    Route::view('/penilaianpk', 'pagepengawas.penilaianpk')->name('penilaianpk');
+
+    // Profil Pengawas
+    Route::get('/profilpengawas', [ProfilPengawasController::class, 'index'])->name('profilpengawas');
+});

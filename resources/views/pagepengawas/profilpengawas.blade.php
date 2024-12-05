@@ -1,91 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/foto/logo.png">
-  <title>
-    Profil | E-Kinerja UMBJM
-  </title>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
-  <!-- Nepcha Analytics (nepcha.com) -->
-  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
-    <!--   Core JS Files   -->
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-</head>
+<x-headeradmin :title="'Profil Admin | E-Kinerja UMBJM'" />
 
-<body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="../assets/foto/logo.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold">E-Kinerja UMBJM</span>
-      </a>
-    </div>
-    <hr class="horizontal dark mt-0">
-
-    <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Utama</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="berandapengawas.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/dashboard.png" alt="Government" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Beranda</span>
-          </a>
-        </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">HALAMAN</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="penilaianpk.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/pk.png" alt="Government" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Penilaian PK</span>
-          </a>
-        </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Akun</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <img src="assets/foto/profil.png" alt="Government" width="50" height="50">
-            </div>
-            <span class="nav-link-text ms-1">Profil</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-    
-  </aside>
+<body class="g-sidenav-show bg-gray-100">
+  <x-navigasipengawas></x-navigasipengawas>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
@@ -106,7 +25,6 @@
             <li class="nav-item d-flex align-items-center">
               <!-- Tombol Keluar -->
               <a class="btn btn-outline-info btn-sm mb-0 me-3" data-bs-toggle="modal" data-bs-target="#logoutModal">Keluar</a>
-          
               <!-- Modal Konfirmasi Keluar -->
               <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -120,7 +38,11 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <a href="../index.html" class="btn bg-gradient-info">Keluar</a>
+                      <!-- Form logout -->
+                      <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn bg-gradient-info">Keluar</button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -135,7 +57,7 @@
 
     <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
       <div class="container-fluid">
-        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('assets/foto/bgprofil.png'); background-position-y: 50%;">
+        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/foto/bgprofil.png'); background-position-y: 50%;">
           <span class="mask bg-gradient-info opacity-6"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
@@ -148,14 +70,15 @@
             <div class="col-auto my-auto">
               <div class="h-100">
                 <h5 class="mb-1">
-                  Nama
+                  {{ $user->username }} <!-- Menampilkan username -->
                 </h5>
                 <p class="mb-0 font-weight-bold text-sm">
-                  Jabatan
+                  PENGAWAS
+                  {{-- {{ $user->role }} <!-- Menampilkan role --> --}}
                 </p>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
               <div class="nav-wrapper position-relative end-0">
                 <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                   <li class="nav-item">
@@ -181,7 +104,7 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 
 <x-headeradmin :title="'Profil Admin | E-Kinerja UMBJM'" />
 
-<body class="g-sidenav-show  bg-gray-100">
+<body class="g-sidenav-show bg-gray-100">
   <x-navigasiadmin></x-navigasiadmin>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -25,7 +25,6 @@
             <li class="nav-item d-flex align-items-center">
               <!-- Tombol Keluar -->
               <a class="btn btn-outline-info btn-sm mb-0 me-3" data-bs-toggle="modal" data-bs-target="#logoutModal">Keluar</a>
-          
               <!-- Modal Konfirmasi Keluar -->
               <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -39,7 +38,6 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    
                       <!-- Form logout -->
                       <form action="{{ route('logout') }}" method="POST">
                         @csrf
@@ -72,14 +70,15 @@
             <div class="col-auto my-auto">
               <div class="h-100">
                 <h5 class="mb-1">
-                  Nama
+                  {{ $user->username }} <!-- Menampilkan username -->
                 </h5>
                 <p class="mb-0 font-weight-bold text-sm">
-                  Jabatan
+                  Admin
+                  {{-- {{ $user->role }} <!-- Menampilkan role --> --}}
                 </p>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
               <div class="nav-wrapper position-relative end-0">
                 <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                   <li class="nav-item">
@@ -105,7 +104,7 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>

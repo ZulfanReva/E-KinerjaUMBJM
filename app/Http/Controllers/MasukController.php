@@ -32,20 +32,27 @@ class MasukController extends Controller
      */
     public function login(Request $request)
     {
-    // Validasi input
-    $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+        // Validasi input
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-    // Cek kredensial
-    if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-        // Login berhasil
-        return redirect()->route('admin.beranda');
-    }
+        // Siapkan kredensial untuk autentikasi
+        $credentials = $request->only('username', 'password');
 
-    // Jika login gagal
-    return redirect()->route('masuk')->with('error', 'Username atau kata sandi salah');
+        // Cek kredensial
+        if (Auth::attempt($credentials)) {
+            // Redirect berdasarkan peran
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.beranda');
+            } elseif (Auth::user()->role === 'pengawas') {
+                return redirect()->route('pengawas.beranda');
+            }
+        }
+
+        // Jika login gagal
+        return redirect()->route('masuk')->with('error', 'Username atau kata sandi salah');
     }
     
 
