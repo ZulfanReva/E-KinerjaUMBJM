@@ -53,7 +53,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($prodis as $prodi)
+                    @forelse ($prodis as $prodi)
                       <tr>
                         <td class="text-start">
                           <div class="d-flex px-2 py-1">
@@ -73,7 +73,13 @@
                           </button>
                         </td>
                       </tr>
-                    @endforeach
+                      @empty
+                      <tr>
+                          <td colspan="5" class="text-center text-secondary py-4">
+                              <h6 class="mb-0">BELUM ADA DATA PRODI</h6>
+                          </td>
+                      </tr>
+                    @endforelse
                   </tbody>
                 </table>
               </div>

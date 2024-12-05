@@ -17,6 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // Nama tabel di database
+    protected $table = 'users';
     protected $fillable = [
         'username',  // Sesuai dengan kolom di tabel migrasi
         'password',
@@ -57,5 +59,10 @@ class User extends Authenticatable
             'password' => bcrypt($password), // Enkripsi password
             'role' => $role,
         ]);
+    }
+
+    public function pengawas()
+    {
+        return $this->hasMany(Pengawas::class, 'user_id', 'id');
     }
 }

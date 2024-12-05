@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('pengawas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('jabatan_id')->constrained('jabatan')->cascadeOnDelete();
-            $table->string('nama');
+            $table->string('nama_pengawas');
+            $table->foreignId('jabatan_id')->constrained('jabatan')->onDelete('cascade'); // Pastikan nama tabel benar
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Ganti 'users_id' menjadi 'user_id'
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down()
     {
         Schema::dropIfExists('pengawas');

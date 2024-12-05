@@ -75,7 +75,7 @@
                   @empty
                       <tr>
                           <td colspan="5" class="text-center text-secondary py-4">
-                              <h6 class="mb-0">Belum ada data jabatan.</h6>
+                              <h6 class="mb-0">BELUM ADA DATA JABATAN</h6>
                           </td>
                       </tr>
                   @endforelse
