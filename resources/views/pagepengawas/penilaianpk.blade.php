@@ -30,62 +30,7 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="../assets/foto/logo.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold">E-Kinerja UMBJM</span>
-      </a>
-    </div>
-    <hr class="horizontal dark mt-0">
-
-    <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Utama</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="berandapengawas.html">
-              <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <img src="../assets/foto/dashboard.png" alt="Beranda" width="30" height="30">
-              </div>
-              <span class="nav-link-text ms-1">Beranda</span>
-          </a>
-        </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">HALAMAN</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <div class="bg-gradient-info icon-shape shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <img src="../assets/foto/pk.png" alt="PK" width="50" height="50">
-            </div>
-            <span class="nav-link-text ms-1">Penilaian PK</span>
-          </a>
-        </li>
-
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Akun</h6>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="profilpengawas.html">
-            <div class="bg-gradient-info icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <img src="../assets/foto/profil.png" alt="Infrastructure" width="30" height="30">
-            </div>
-            <span class="nav-link-text ms-1">Profil</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-    
-  </aside>
+  <x-navigasipengawas></x-navigasipengawas>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
@@ -99,31 +44,9 @@
           <h6 class="font-weight-bolder mb-0">Selamat datang di halaman Penilaian PK</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar"></div>
-          <ul class="navbar-nav justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <!-- Tombol Keluar -->
-              <a class="btn btn-outline-info btn-sm mb-0 me-3" data-bs-toggle="modal" data-bs-target="#logoutModal">Keluar</a>
           
-              <!-- Modal Konfirmasi Keluar -->
-              <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Keluar</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      Apakah Anda yakin ingin keluar dari akun?
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      <a href="../index.html" class="btn bg-gradient-info">Keluar</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
+          <!-- Button Logout -->
+          <x-buttonlogout></x-buttonlogout>
 
         </div>
       </div>

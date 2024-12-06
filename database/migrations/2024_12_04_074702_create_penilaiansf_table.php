@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('dosen_id')->constrained('dosen')->cascadeOnDelete();
             $table->foreignId('pengawas_id')->constrained('pengawas')->cascadeOnDelete();
-            $table->date('tanggal_penilaian');
+            $table->string('periode');
             $table->integer('orientasi_pelayanan');
             $table->integer('integritas');
             $table->integer('komitmen');

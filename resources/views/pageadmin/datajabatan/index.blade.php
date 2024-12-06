@@ -20,11 +20,9 @@
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
           
-          <ul class="navbar-nav justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-info btn-sm mb-0 me-3" data-bs-toggle="modal" data-bs-target="#logoutModal">Keluar</a>
-            </li>
-          </ul>
+          <!-- Button Logout -->
+          <x-buttonlogout></x-buttonlogout>
+
         </div>
       </div>
     </nav>

@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('dosen_id')->constrained('dosen')->cascadeOnDelete();
             $table->foreignId('admin_id')->constrained('admin')->cascadeOnDelete();
-            $table->date('tanggal_penilaian');
+            $table->string('periode');
             $table->integer('bidang_pendidikan');
             $table->integer('bidang_penelitian');
             $table->integer('bidang_pengabdian');
+            $table->integer('bidang_penunjang');
             $table->timestamps();
         });
     }
