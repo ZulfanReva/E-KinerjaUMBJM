@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('penilaian_pm', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_admin')->constrained('users');
+            $table->foreignId('id_dosen')->constrained('dosen');
             $table->foreignId('id_penilaiancf')->constrained('penilaian_cf');
             $table->foreignId('id_penilaiansf')->constrained('penilaian_sf');
-            $table->foreignId('id_dosen')->constrained('dosen');
-            $table->string('periode');
+            $table->foreignId('periode_id')->constrained('periode')->onDelete('cascade');
             $table->text('umpan_balik');
             $table->timestamps();
         });

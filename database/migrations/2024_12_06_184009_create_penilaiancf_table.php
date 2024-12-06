@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('penilaian_cf', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dosen_id')->constrained('dosen')->cascadeOnDelete();
-            $table->foreignId('admin_id')->constrained('admin')->cascadeOnDelete();
-            $table->string('periode');
+            $table->foreignId('periode_id')->constrained('periode')->onDelete('cascade');
             $table->integer('bidang_pendidikan');
             $table->integer('bidang_penelitian');
             $table->integer('bidang_pengabdian');

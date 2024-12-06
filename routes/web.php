@@ -11,6 +11,9 @@ use App\Http\Controllers\DataJabatanController;
 use App\Http\Controllers\DataJatabanController;
 use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\DataPengawasController;
+use App\Http\Controllers\DataPeriodeController;
+use App\Http\Controllers\PenilaianPMController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilPengawasController;
 
 // Route untuk halaman beranda
@@ -53,6 +56,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     'update' => 'datadosen.update',
     'destroy' => 'datadosen.destroy',
     ]);
+
+    // Data Prodi menggunakan resource route
+    Route::resource('dataprodi', ProdiController::class)->names([
+        'index' => 'dataprodi.index',
+        'create' => 'dataprodi.create',
+        'store' => 'dataprodi.store',
+        'show' => 'dataprodi.show',
+        'edit' => 'dataprodi.edit',
+        'update' => 'dataprodi.update',
+        'destroy' => 'dataprodi.destroy',
+    ]);
     
     // Data Pengawas menggunakan resource route
     Route::resource('datapengawas', DataPengawasController::class)->names([
@@ -74,34 +88,40 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         'edit' => 'datajabatan.edit',
         'update' => 'datajabatan.update',
         'destroy' => 'datajabatan.destroy',
-        ]);
-
-    // Data Prodi menggunakan resource route
-    Route::resource('dataprodi', ProdiController::class)->names([
-        'index' => 'dataprodi.index',
-        'create' => 'dataprodi.create',
-        'store' => 'dataprodi.store',
-        'show' => 'dataprodi.show',
-        'edit' => 'dataprodi.edit',
-        'update' => 'dataprodi.update',
-        'destroy' => 'dataprodi.destroy',
     ]);
 
-    // Penilaian Profile Matching
-    Route::view('/penilaianpm', 'pageadmin.penilaianpm')->name('penilaianpm');
+    // Penilaian PM menggunakan resource route
+    Route::resource('penilaianpm', PenilaianPMController::class)->names([
+        'index' => 'penilaianpm.index',
+        'create' => 'penilaianpm.create',
+        'store' => 'penilaianpm.store',
+        'show' => 'penilaianpm.show',
+        'edit' => 'penilaianpm.edit',
+        'update' => 'penilaianpm.update',
+        'destroy' => 'penilaianpm.destroy',
+    ]);
+
+    // Data Periode menggunakan resource route
+    Route::resource('dataperiode', PeriodeController::class)->names([
+        'index' => 'dataperiode.index',
+        'create' => 'dataperiode.create',
+        'store' => 'dataperiode.store',
+        'show' => 'dataperiode.show',
+        'edit' => 'dataperiode.edit',
+        'update' => 'dataperiode.update',
+        'destroy' => 'dataperiode.destroy',
+    ]);
 
     // Profil Admin
     Route::get('/profiladmin', [ProfilAdminController::class, 'index'])->name('profiladmin');
-});
+    });
 
 Route::middleware(['auth'])->prefix('pengawas')->name('pengawas.')->group(function () {
     // Halaman beranda pengawas
     Route::view('/beranda', 'pagepengawas.berandapengawas')->name('beranda');
     
-
     // Penilaian Profile Matching
     Route::view('/penilaianpk', 'pagepengawas.penilaianpk')->name('penilaianpk');
-
     // Profil Pengawas
     Route::get('/profilpengawas', [ProfilPengawasController::class, 'index'])->name('profilpengawas');
 });

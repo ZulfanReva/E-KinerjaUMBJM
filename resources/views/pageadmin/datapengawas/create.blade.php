@@ -76,12 +76,20 @@
                         </div>
                     </div>
 
-                  <div class="d-flex justify-content-between mt-4">
-                      <div class="d-flex" style="gap: 10px;">
-                          <button type="submit" class="btn bg-gradient-info">Simpan</button>
-                          <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='{{ route('admin.datapengawas.index') }}'">Kembali</button>
-                      </div>
-                  </div>
+                    <div id="additionalForms"></div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <!-- Tombol Simpan dan Kembali (bersebelahan) -->
+                        <div class="d-flex" style="gap: 10px;"> <!-- Menambahkan jarak menggunakan gap -->
+                            <button type="submit" class="btn bg-gradient-info">Simpan</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='{{ route('admin.datapengawas.index') }}'">Kembali</button>
+                        </div>
+                    
+                        <!-- Tombol Tambah Form di sebelah kanan -->
+                        <button type="button" class="btn btn-outline-info" id="addFormButton">
+                            <i class="fa fa-plus"></i> Tambah Form
+                        </button>
+                    </div>
                 </form>                
               </div>
             </div>
@@ -92,43 +100,43 @@
   </main>
 
   <script>
-    // Menambahkan form dinamis untuk input dosen tambahan
-    document.getElementById('addFormButton').addEventListener('click', () => {
-    const newForm = document.createElement('div');
-    newForm.classList.add('form-group', 'row', 'mb-3');
-    newForm.innerHTML = `
-        <div class="form-group row mb-3">
-                          <div class="col-md-6 mb-3">
-                              <label for="nama_pengawas" class="form-label">Nama Pengawas</label>
-                              <input type="text" name="nama_pengawas" class="form-control" placeholder="Masukkan Nama Pengawas" required>
-                          </div>
-                          <div class="col-md-6 mb-3">
-                              <label for="jabatan_id" class="form-label">Jabatan</label>
-                              <select name="jabatan_id" class="form-select" required>
-                                  <option value="" selected disabled>Pilih Jabatan</option>
-                                  @foreach ($jabatans as $jabatan)
-                                      <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
-                                  @endforeach
-                              </select>
-                          </div>
-                      </div>
-                      <div class="form-group row mb-3">
-                          <div class="col-md-6 mb-3">
-                              <label for="user_id" class="form-label">Nama Pengguna</label>
-                              <select name="user_id" class="form-select" required>
-                                  <option value="" selected disabled>Pilih Pengguna</option>
-                                  @foreach ($users as $user)
-                                      <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                  @endforeach
-                              </select>
-                          </div>
-                          <div class="col-md-6 mb-3">
-                              <label for="password" class="form-label">Kata Sandi</label>
-                              <input type="password" name="password" class="form-control" placeholder="Masukkan Kata Sandi" required>
-                          </div>
-                      </div>`;
-    document.getElementById('additionalForms').appendChild(newForm);
-});
+   // Menambahkan form dinamis untuk input dosen tambahan
+   document.getElementById('addFormButton').addEventListener('click', () => {
+      const newForm = document.createElement('div');
+      newForm.classList.add('form-group', 'row', 'mb-3');
+      newForm.innerHTML = `
+            <div class="form-group row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="nama_pengawas" class="form-label">Nama Pengawas</label>
+                    <input type="text" name="nama_pengawas[]" class="form-control" placeholder="Masukkan Nama Pengawas" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="jabatan_id" class="form-label">Jabatan</label>
+                    <select name="jabatan_id[]" class="form-select" required>
+                        <option value="" selected disabled>Pilih Jabatan</option>
+                        @foreach ($jabatans as $jabatan)
+                            <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="user_id" class="form-label">Nama Pengguna</label>
+                    <select name="user_id[]" class="form-select" required>
+                        <option value="" selected disabled>Pilih Pengguna</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="password" class="form-label">Kata Sandi</label>
+                    <input type="password" name="password[]" class="form-control" placeholder="Masukkan Kata Sandi" required>
+                </div>
+            </div>`;
+            document.getElementById('additionalForms').appendChild(newForm);
+        });
   
     // Seleksi elemen yang diperlukan
     const formContainer = document.getElementById('formContainer');

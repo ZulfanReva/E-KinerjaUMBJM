@@ -63,7 +63,7 @@ class DataPengawasController extends Controller
         'user_id' => $user->id, // Pastikan user_id diisi
     ]);
 
-    return redirect()->route('pageadmin.datapengawas.index')->with('success', 'Pengawas berhasil ditambahkan.');
+    return redirect()->route('admin.datapengawas.index')->with('success', 'Pengawas berhasil ditambahkan.');
 }
 
     // Menampilkan detail data pengawas
