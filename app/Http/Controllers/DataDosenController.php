@@ -62,44 +62,44 @@ class DataDosenController extends Controller
     }
 
     // Menampilkan form edit data dosen
-    public function edit($id)
+        public function edit($id)
+        {
+            $dosen = Dosen::findOrFail($id);
+            $prodis = Prodi::all(); // Mengambil semua data prodi
+            return view('pageadmin.datadosen.edit', compact('dosen', 'prodis'));
+        }
+
+        // Memperbarui data dosen
+        public function update(Request $request, $id)
     {
-        $dosen = Dosen::findOrFail($id);
-        $prodis = Prodi::all(); // Mengambil semua data prodi
-        return view('pageadmin.datadosen.edit', compact('dosen', 'prodis'));
-    }
-
-    // Memperbarui data dosen
-    public function update(Request $request, $id)
-{
-    // Validasi data
-    $validatedData = $request->validate([
-        'nama' => 'required|string|max:255',
-        'nidn' => 'required|string|max:20',
-        'prodi_id' => 'required|exists:prodi,id',
-        'status' => 'required|in:aktif,nonaktif',
-    ]);
-    
-    try {
-        // Cari dosen berdasarkan ID
-        $dosen = Dosen::findOrFail($id);
-
-        // Update data dosen
-        $dosen->update([
-            'nama_dosen' => $validatedData['nama'],
-            'nidn' => $validatedData['nidn'],
-            'prodi_id' => $validatedData['prodi_id'],
-            'status' => $validatedData['status'],
+        // Validasi data
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nidn' => 'required|string|max:20',
+            'prodi_id' => 'required|exists:prodi,id',
+            'status' => 'required|in:aktif,nonaktif',
         ]);
+        
+        try {
+            // Cari dosen berdasarkan ID
+            $dosen = Dosen::findOrFail($id);
 
-        // Mengembalikan respons sukses
-        return response()->json(['success' => true]);
+            // Update data dosen
+            $dosen->update([
+                'nama_dosen' => $validatedData['nama'],
+                'nidn' => $validatedData['nidn'],
+                'prodi_id' => $validatedData['prodi_id'],
+                'status' => $validatedData['status'],
+            ]);
 
-    } catch (\Exception $e) {
-        // Menangani kesalahan dan mengembalikan error
-        return response()->json(['success' => false, 'message' => 'Gagal mengupdate data: ' . $e->getMessage()]);
+            // Mengembalikan respons sukses
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            // Menangani kesalahan dan mengembalikan error
+            return response()->json(['success' => false, 'message' => 'Gagal mengupdate data: ' . $e->getMessage()]);
+        }
     }
-}
 
     // Menghapus data dosen
     public function destroy($id)

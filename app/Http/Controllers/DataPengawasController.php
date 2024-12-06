@@ -77,30 +77,26 @@ class DataPengawasController extends Controller
     public function edit($id)
     {
         $pengawas = Pengawas::findOrFail($id);
-        $users = User::all(); // Ambil semua data pengguna
-        $jabatans = Jabatan::all(); // Ambil semua data jabatan
-
-        return view('pageadmin.datapengawas.edit', compact('pengawas', 'users', 'jabatans'));
+        $jabatans = Jabatan::all(); // Mengambil semua data pengawas
+        return view('pageadmin.datapengawas.edit', compact('pengawas', 'jabatans'));
     }
 
-    // Memperbarui data pengawas
+    // Memperbarui data dosen
     public function update(Request $request, $id)
     {
         // Validasi data
         $validatedData = $request->validate([
             'nama_pengawas' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id', // Pastikan ini adalah user_id
             'jabatan_id' => 'required|exists:jabatan,id',
         ]);
-
+        
         try {
-            // Cari pengawas berdasarkan ID
+            // Cari dosen berdasarkan ID
             $pengawas = Pengawas::findOrFail($id);
 
-            // Update data pengawas
+            // Update data dosen
             $pengawas->update([
                 'nama_pengawas' => $validatedData['nama_pengawas'],
-                'users_id' => $validatedData['users_id'],
                 'jabatan_id' => $validatedData['jabatan_id'],
             ]);
 
