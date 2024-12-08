@@ -10,8 +10,10 @@ namespace App\Models;
     protected $table = 'dosen'; // Nama tabel di database
     protected $fillable = ['nama_dosen', 'nidn', 'prodi_id', 'status'];
 
+    // Relasi dengan tabel prodi
     public function prodi()
-{
-    return $this->belongsTo(Prodi::class, 'prodi_id');
-}
+    {
+        return $this->belongsTo(Prodi::class);
+   
+    }
 }

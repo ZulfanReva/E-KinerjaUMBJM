@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('id_admin')->constrained('users');
             $table->foreignId('id_dosen')->constrained('dosen');
             $table->foreignId('id_penilaiancf')->constrained('penilaian_cf');
-            $table->foreignId('id_penilaiansf')->constrained('penilaian_sf');
+            $table->foreignId('id_penilaianpk')->constrained('penilaian_pk');
             $table->foreignId('periode_id')->constrained('periode')->onDelete('cascade');
+            $table->integer('nilai_npm');
             $table->text('umpan_balik');
             $table->timestamps();
         });

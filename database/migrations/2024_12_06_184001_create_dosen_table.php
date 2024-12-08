@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_dosen');
             $table->string('nidn')->unique();
             $table->foreignId('prodi_id')->constrained('prodi')->onDelete('cascade');
-            $table->enum('status', ['aktif', 'nonaktif']);
+            $table->enum('status', ['Aktif', 'Nonaktif']);
             $table->timestamps();
         });
     }

@@ -73,8 +73,8 @@
                                 <label for="status[]" class="form-label">Status</label>
                                 <select name="status[]" class="form-select" required>
                                     <option value="" selected disabled>Pilih Status</option>
-                                    <option value="aktif">Aktif</option>
-                                    <option value="nonaktif">Nonaktif</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
                                 </select>
                             </div>
                         </div>
@@ -106,36 +106,44 @@
 
     <script>
       // Menambahkan form dinamis untuk input dosen tambahan
-      document.getElementById('addFormButton').addEventListener('click', () => {
-      const newForm = document.createElement('div');
-      newForm.classList.add('form-group', 'row', 'mb-3');
-      newForm.innerHTML = `
-          <div class="col-md-6 mb-3">
-              <label for="nama_dosen[]" class="form-label">Nama Dosen</label>
-              <input type="text" name="nama_dosen[]" class="form-control" placeholder="Masukkan Nama Dosen" required>
-          </div>
-          <div class="col-md-6 mb-3">
-              <label for="nidn[]" class="form-label">NIDN</label>
-              <input type="text" name="nidn[]" class="form-control" placeholder="Masukkan NIDN" required>
-          </div>
-          <div class="col-md-6 mb-3">
-              <label for="prodi[]" class="form-label">Prodi</label>
-              <select name="prodi[]" class="form-select" required>
-                  <option value="" selected disabled>Pilih Prodi</option>
-                  @foreach ($prodis as $prodi)
-                      <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}</option>
-                  @endforeach
-              </select>
-          </div>
-          <div class="col-md-6 mb-3">
-              <label for="status[]" class="form-label">Status</label>
-              <select name="status[]" class="form-select" required>
-                  <option value="aktif">Aktif</option>
-                  <option value="nonaktif">Nonaktif</option>
-              </select>
-          </div>`;
-      document.getElementById('additionalForms').appendChild(newForm);
-  });
+
+    document.getElementById('addFormButton').addEventListener('click', () => {
+    const newForm = document.createElement('div');
+    newForm.classList.add('form-group', 'mb-4');
+    newForm.innerHTML = `
+        <div id="formGroup">
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="nama_dosen[]" class="form-label">Nama Dosen</label>
+                                <input type="text" name="nama_dosen[]" class="form-control" placeholder="Masukkan Nama Dosen" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nidn[]" class="form-label">NIDN</label>
+                                <input type="text" name="nidn[]" class="form-control" placeholder="Masukkan NIDN" required>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="prodi[]" class="form-label">Prodi</label>
+                                <select name="prodi_id[]" class="form-select" required>
+                                    <option value="" selected disabled>Pilih Prodi</option>
+                                    @foreach ($prodis as $prodi)
+                                        <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="status[]" class="form-label">Status</label>
+                                <select name="status[]" class="form-select" required>
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>`;
+    document.getElementById('additionalForms').appendChild(newForm);
+    });
     
       // Seleksi elemen yang diperlukan
       const formContainer = document.getElementById('formContainer');

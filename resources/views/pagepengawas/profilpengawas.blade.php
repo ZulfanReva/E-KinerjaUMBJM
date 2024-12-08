@@ -33,7 +33,7 @@
 
     <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
       <div class="container-fluid">
-        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/foto/bgprofil.png'); background-position-y: 50%;">
+        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('{{ asset('assets/foto/bgprofil.png') }}');; background-position-y: 50%;">
           <span class="mask bg-gradient-info opacity-6"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
@@ -43,17 +43,18 @@
                 <img src="../assets/foto/profilpengawas.png" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
               </div>
             </div>
+            @foreach ($pengawas as $data)
             <div class="col-auto my-auto">
-              <div class="h-100">
-                <h5 class="mb-1">
-                  {{ $user->username }} <!-- Menampilkan username -->
-                </h5>
-                <p class="mb-0 font-weight-bold text-sm">
-                  PENGAWAS
-                  {{-- {{ $user->role }} <!-- Menampilkan role --> --}}
-                </p>
-              </div>
+                <div class="h-100">
+                    <h5 class="mb-1">
+                        {{ $data->nama_pengawas }} <!-- Nama pengawas -->
+                    </h5>
+                    <p class="mb-0 font-weight-bold text-sm">
+                        {{ $data->jabatan->nama_jabatan }} - PENGAWAS <!-- Nama jabatan + PENGAWAS -->
+                    </p>
+                </div>
             </div>
+            @endforeach
             {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
               <div class="nav-wrapper position-relative end-0">
                 <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">

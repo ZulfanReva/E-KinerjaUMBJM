@@ -27,6 +27,6 @@ class Pengawas extends Model
     // Relasi dengan model Jabatan
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+        return $this->belongsTo(Jabatan::class);
     }
 }

@@ -38,8 +38,8 @@
                                         <div class="row">
                                             <!-- Input Nama -->
                                             <div class="col-md-3 mb-3">
-                                                <label for="nama" class="form-label">Nama</label>
-                                                <input type="text" id="nama_dosen" name="nama" class="form-control" placeholder="Masukkan Nama" value="{{ old('nama', $dosen->nama_dosen) }}">
+                                                <label for="nama_dosen" class="form-label">Nama</label>
+                                                <input type="text" id="nama_dosen" name="nama_dosen" class="form-control" placeholder="Masukkan Nama" value="{{ old('nama_dosen', $dosen->nama_dosen) }}">
                                             </div>
 
                                             <!-- Input NIDN -->
@@ -54,7 +54,7 @@
                                                 <select id="prodi" name="prodi_id" class="form-select">
                                                     <option value="">Pilih Prodi</option>
                                                     @foreach ($prodis as $prodi)
-                                                        <option value="{{ $prodi->id }}" {{ $prodi->id == old('prodi', $dosen->prodi_id) ? 'selected' : '' }}>
+                                                        <option value="{{ $prodi->id }}" {{ $prodi->id == old('prodi_id', $dosen->prodi_id) ? 'selected' : '' }}>
                                                             {{ $prodi->nama_prodi }}
                                                         </option>
                                                     @endforeach
@@ -65,8 +65,8 @@
                                             <div class="col-md-3 mb-3">
                                                 <label for="status" class="form-label">Status</label>
                                                 <select id="status" name="status" class="form-select">
-                                                    <option value="aktif" {{ $dosen->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                                    <option value="nonaktif" {{ $dosen->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                                                    <option value="Aktif" {{ $dosen->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                    <option value="Nonaktif" {{ $dosen->status == 'Nonaktif' ? 'selected' : '' }}>Nonaktif</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -98,7 +98,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
                             </div>
                         </div>
                     </div>
@@ -106,44 +105,44 @@
             </div>
         </div>
 
-        <!-- JavaScript -->
         <script>
-          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
+              document.getElementById('formContainer').addEventListener('submit', function (event) {
+                  event.preventDefault(); // Mencegah form disubmit secara default
+  
+                  const formData = new FormData(this); // Mengambil data form
+                  const data = {};  // Data untuk dikirim ke server
+  
+                  formData.forEach((value, key) => {
+                      data[key] = value;
+                  });
+  
+                  // Mengirim data ke server menggunakan fetch
+                  fetch("{{ route('admin.datadosen.update', $dosen->id) }}", {
+                      method: "PUT",
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'X-CSRF-TOKEN': csrfToken
+                      },
+                      body: JSON.stringify(data)
+                  })
+                  .then(response => response.json())  // Mengambil response dalam format JSON
+                  .then(data => {
+                      if (data.success) {
+                          alert("Data dosen berhasil diperbarui!");
+                          window.location.href = "{{ route('admin.datadosen.index') }}";  // Redirect ke halaman index
+                      } else {
+                          alert(`Gagal mengupdate data: ${data.message}`);
+                      }
+                  })
+                  .catch(error => {
+                      console.error("Error:", error);
+                      alert(`Terjadi kesalahan: ${error.message}`);
+                  });
+              });
+          </script>
 
-document.getElementById('formContainer').addEventListener('submit', function (event) {
-    event.preventDefault(); // Mencegah form disubmit secara default
-
-    const formData = new FormData(this); // Mengambil data form
-    const data = {};  // Data untuk dikirim ke server
-
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-
-    // Mengirim data ke server menggunakan fetch
-    fetch("{{ route('admin.datadosen.update', $dosen->id) }}", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())  // Mengambil response dalam format JSON
-    .then(data => {
-        if (data.success) {
-            alert("Data dosen berhasil diperbarui!");
-            window.location.href = "{{ route('admin.datadosen.index') }}";  // Redirect ke halaman index
-        } else {
-            alert(`Gagal mengupdate data: ${data.message}`);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert(`Terjadi kesalahan: ${error.message}`);
-    });
-});
-        </script>
     </main>
 </body>
 

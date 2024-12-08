@@ -6,14 +6,15 @@ use App\Http\Controllers\MasukController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\DataDosenController;
 use App\Http\Controllers\DataJabatanController;
 use App\Http\Controllers\DataJatabanController;
+use App\Http\Controllers\DataPeriodeController;
+use App\Http\Controllers\PenilaianPKController;
+use App\Http\Controllers\PenilaianPMController;
 use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\DataPengawasController;
-use App\Http\Controllers\DataPeriodeController;
-use App\Http\Controllers\PenilaianPMController;
-use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilPengawasController;
 
 // Route untuk halaman beranda
@@ -120,8 +121,13 @@ Route::middleware(['auth'])->prefix('pengawas')->name('pengawas.')->group(functi
     // Halaman beranda pengawas
     Route::view('/beranda', 'pagepengawas.berandapengawas')->name('beranda');
     
-    // Penilaian Profile Matching
-    Route::view('/penilaianpk', 'pagepengawas.penilaianpk')->name('penilaianpk');
+    // Route untuk halaman create penilaian pk dengan parameter dosen_id dan pengawas_id
+    Route::get('penilaianpk/create/{dosen_id}/{pengawas_id}', [PenilaianPKController::class, 'create'])
+        ->name('penilaianpk.create');
+    
+    // Menggunakan resource untuk sisa route
+    Route::resource('penilaianpk', PenilaianPKController::class)->except(['create']);
+
     // Profil Pengawas
     Route::get('/profilpengawas', [ProfilPengawasController::class, 'index'])->name('profilpengawas');
 });

@@ -63,10 +63,11 @@
                         <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi }}</p>
                     </td>                    
                       <td class="align-middle text-center text-sm">
-                        <span class="badge bg-gradient-{{ $dosen->status === 'aktif' ? 'success' : 'danger' }} btn-sm mb-0">
-                          {{ ucfirst($dosen->status) }}
+                        <span class="badge bg-gradient-{{ $dosen->status === 'Aktif' ? 'success' : 'danger' }} btn-sm mb-0">
+                            {{ ucfirst($dosen->status) }}
                         </span>
-                      </td>
+                    </td>
+                    
                       <td class="align-middle text-center">
                         <a href="{{ route('admin.datadosen.edit', $dosen->id) }}" class="btn btn-sm bg-gradient-info me-2">
                           <i class="fa fa-edit fa-xs"></i>
@@ -82,11 +83,11 @@
                       </td>
                     </tr>
                     @empty
-                    <tr>
-                      <td colspan="5" class="text-center text-secondary py-4">
-                        <h6 class="mb-0">BELUM ADA DATA DOSEN</h6>
-                      </td>
-                    </tr>
+                      <tr>
+                          <td colspan="5" class="text-center text-secondary py-4">
+                              <h6 class="mb-0">BELUM ADA DATA DOSEN</h6>
+                          </td>
+                      </tr>
                     @endforelse
                   </tbody>
                 </table>

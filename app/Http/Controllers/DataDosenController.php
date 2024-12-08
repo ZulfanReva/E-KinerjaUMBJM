@@ -28,33 +28,38 @@ class DataDosenController extends Controller
     // Menyimpan data dosen baru
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
+        // Validasi data
+        $validatedData = $request->validate([
             'nama_dosen' => 'required|array',
             'nama_dosen.*' => 'required|string|max:255',
             'nidn' => 'required|array',
             'nidn.*' => 'required|string|max:20',
             'prodi_id' => 'required|array',
-            'prodi_id.*' => 'required|exists:prodi,id', // Bukan prodis
+            'prodi_id.*' => 'required|exists:prodi,id',
             'status' => 'required|array',
-            'status.*' => 'required|in:aktif,nonaktif',
+            'status.*' => 'required|in:Aktif,Nonaktif',
         ]);
 
-        // Simpan data dosen
+        // Menyimpan data dosen sekaligus menggunakan insert
+        $data = [];
         foreach ($request->nama_dosen as $key => $namaDosen) {
-            Dosen::create([
+            $data[] = [
                 'nama_dosen' => $namaDosen,
                 'nidn' => $request->nidn[$key],
                 'prodi_id' => $request->prodi_id[$key],
                 'status' => $request->status[$key],
-            ]);
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
 
-        // Setelah berhasil, redirect ke halaman daftar dosen
+        Dosen::insert($data);
+
+        // Redirect dengan pesan sukses
         return redirect()->route('admin.datadosen.index')->with('success', 'Data Dosen berhasil disimpan!');
     }
 
-   // Menampilkan detail data dosen
+    // Menampilkan detail data dosen
     public function show($id)
     {
         $dosen = Dosen::findOrFail($id);
@@ -62,22 +67,22 @@ class DataDosenController extends Controller
     }
 
     // Menampilkan form edit data dosen
-        public function edit($id)
-        {
-            $dosen = Dosen::findOrFail($id);
-            $prodis = Prodi::all(); // Mengambil semua data prodi
-            return view('pageadmin.datadosen.edit', compact('dosen', 'prodis'));
-        }
+    public function edit($id)
+    {
+        $dosen = Dosen::findOrFail($id);
+        $prodis = Prodi::all(); // Mengambil semua data prodi
+        return view('pageadmin.datadosen.edit', compact('dosen', 'prodis'));
+    }
 
-        // Memperbarui data dosen
-        public function update(Request $request, $id)
+    // Memperbarui data dosen
+    public function update(Request $request, $id)
     {
         // Validasi data
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_dosen' => 'required|string|max:255',
             'nidn' => 'required|string|max:20',
             'prodi_id' => 'required|exists:prodi,id',
-            'status' => 'required|in:aktif,nonaktif',
+            'status' => 'required|in:Aktif,Nonaktif',
         ]);
         
         try {
@@ -86,7 +91,7 @@ class DataDosenController extends Controller
 
             // Update data dosen
             $dosen->update([
-                'nama_dosen' => $validatedData['nama'],
+                'nama_dosen' => $validatedData['nama_dosen'],
                 'nidn' => $validatedData['nidn'],
                 'prodi_id' => $validatedData['prodi_id'],
                 'status' => $validatedData['status'],
@@ -100,12 +105,11 @@ class DataDosenController extends Controller
             return response()->json(['success' => false, 'message' => 'Gagal mengupdate data: ' . $e->getMessage()]);
         }
     }
-
     // Menghapus data dosen
     public function destroy($id)
     {
         // Mencari data berdasarkan ID
-        $dosen = Dosen::find($id);
+        $dosen = Dosen::findOrFail($id);
 
         // Cek apakah data ditemukan
         if (!$dosen) {
@@ -116,12 +120,10 @@ class DataDosenController extends Controller
         }
 
         // Menghapus data
-        $dosen->delete();
+         // Menghapus data
+    $dosen->delete();
 
-        // Mengirimkan pesan sukses dalam format JSON
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Dosen berhasil dihapus!'
-        ]);
+    // Redirect setelah menghapus data
+    return redirect()->route('admin.datadosen.index')->with('success', 'Data Dosen berhasil dihapus!');
     }
 }
