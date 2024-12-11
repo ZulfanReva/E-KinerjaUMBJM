@@ -92,7 +92,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="5" class="text-center text-secondary py-4">
-                                            <h6 class="mb-0">BELUM ADA DOSEN YANG DINILAI</h6>
+                                            <h6 class="mb-0">BELUM ADA DATA PENILAIAN PK</h6>
                                         </td>
                                     </tr>
                                 @endforelse

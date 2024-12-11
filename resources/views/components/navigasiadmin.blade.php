@@ -93,8 +93,8 @@
         <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
           <div class="full-background bg-gradient-info" ></div>
           <div class="card-body text-start p-3 w-100">
-            <div class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md ">
-                <i class="fa fa-whatsapp text-dark text-gradient text-lg top-0 " aria-hidden="true" id="sidenavCardIcon"></i>
+            <div class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md">
+                <img src="{{ asset('assets/foto/LogoWA.png') }}" alt="Logo WhatsApp" class="img-fluid" style="max-width: 30px; max-height: 30px;">
             </div>
             <div class="docs-info">
               <h6 class="text-white up mb-0">Butuh Bantuan?</h6>

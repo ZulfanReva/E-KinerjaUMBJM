@@ -132,13 +132,19 @@ class PenilaianPMController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        // Hapus data penilaian dari database
-        $penilaian = PenilaianPM::findOrFail($id);
-        $penilaian->delete();
+        // Mencari data dosen berdasarkan ID
+        $dosen = Dosen::findOrFail($id);
+        
+        // Menghapus data penilaianCF dan penilaianPK terkait dosen
+        $dosen->penilaianCF()->delete();
+        $dosen->penilaianPK()->delete();
 
-        return redirect()->route('pageadmin.penilaianpm.index')
-                         ->with('success', 'Penilaian berhasil dihapus.');
+        // Menghapus data dosen itu sendiri
+        $dosen->delete();
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('admin.penilaianpm.index')->with('success', 'Data berhasil dihapus');
     }
 }

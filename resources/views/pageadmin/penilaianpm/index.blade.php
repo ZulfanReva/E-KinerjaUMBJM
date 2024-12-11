@@ -51,55 +51,71 @@
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai PM</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                     </tr>
-                </thead>
-                <tbody>
-                  @foreach ($dataDosen as $dosen)
-                  <tr>
-                      <td class="text-start">
-                          <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
-                      </td>
-                      <td class="text-start">
-                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
-                      </td>
-                      <td class="text-start">
-                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi ?? '-' }}</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                          <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
-                      </td>
-                      <td class="align-middle text-center">
-                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->penilaianPK->periode->nama_periode ?? '-' }}</p>
-                      </td>
-                      <td class="align-middle text-center">
-                          @if($dosen->penilaianCF) 
-                              <!-- Jika sudah ada nilai CF, tampilkan nilai tersebut -->
-                              <span>{{ $dosen->penilaianCF->nilai_ncf ?? '-' }}</span>
-                          @else
-                              <!-- Jika belum ada nilai CF, tampilkan tombol Nilai -->
-                              <a href="{{ route('admin.penilaiancf.create', ['dosen_id' => $dosen->id]) }}" class="btn bg-gradient-danger btn-sm mb-0">Nilai</a>
-                          @endif
-                      </td>
-                      <td class="align-middle text-center">
-                          <span>{{ $dosen->penilaianPK->nilai_nsf ?? '-' }}</span>
-                      </td>
-                      <td class="align-middle text-center">
-                          @if($dosen->nilai_pm)
-                              <span>{{ $dosen->nilai_pm }}</span>
-                          @else
-                              <span>-</span>
-                          @endif
-                      </td>
-                      <td class="align-middle text-center">
-                          <button class="btn btn-sm bg-gradient-info me-2">
-                              <i class="fa fa-eye fa-xs"></i>
-                          </button>
-                          <button class="btn btn-sm bg-gradient-danger me-2">
-                              <i class="fa fa-trash fa-xs"></i>
-                          </button>
-                      </td>
-                  </tr>
-                  @endforeach
-               </tbody>
+                  </thead>
+                  
+                  <tbody>
+                    @forelse ($dataDosen as $dosen)
+                        <tr>
+                            <td class="text-start">
+                                <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
+                            </td>
+                            <td class="text-start">
+                                <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
+                            </td>
+                            <td class="text-start">
+                                <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi ?? '-' }}</p>
+                            </td>
+                            <td class="align-middle text-center text-sm">
+                                <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <p class="text-xs font-weight-bold mb-0">{{ $dosen->penilaianPK->periode->nama_periode ?? '-' }}</p>
+                            </td>
+                            <td class="align-middle text-center">
+                                @if($dosen->penilaianCF) 
+                                    <!-- Jika sudah ada nilai CF, tampilkan nilai tersebut -->
+                                    <span>{{ $dosen->penilaianCF->nilai_ncf ?? '-' }}</span>
+                                @else
+                                    <!-- Jika belum ada nilai CF, tampilkan tombol Nilai -->
+                                    <a href="{{ route('admin.penilaiancf.create', ['dosen_id' => $dosen->id]) }}" class="btn bg-gradient-danger btn-sm mb-0">Nilai</a>
+                                @endif
+                            </td>
+                            <td class="align-middle text-center">
+                                <span>{{ $dosen->penilaianPK->nilai_nsf ?? '-' }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                @if($dosen->nilai_pm)
+                                    <span>{{ $dosen->nilai_pm }}</span>
+                                @else
+                                    <span>-</span>
+                                @endif
+                            </td>
+                            <td class="align-middle text-center">
+                                <!-- Button untuk melihat detail -->
+                                <button class="btn btn-sm bg-gradient-info me-2">
+                                    <i class="fa fa-eye fa-xs"></i>
+                                </button>
+                                
+                                <!-- Button untuk menghapus data -->
+                                <form action="{{ route('admin.penilaianpm.destroy', $dosen->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm bg-gradient-danger me-2">
+                                        <i class="fa fa-trash fa-xs"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center text-secondary py-4">
+                                <h6 class="mb-0">BELUM ADA DATA PENILAIAN PM</h6>
+                            </td>
+                        </tr>
+                    @endforelse
+                  </tbody>
+                
+                
                 </table>
               </div>
             </div>
