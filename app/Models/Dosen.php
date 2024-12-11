@@ -14,6 +14,18 @@ namespace App\Models;
     public function prodi()
     {
         return $this->belongsTo(Prodi::class);
-   
     }
+
+    // Relasi dengan PenilaianPK
+    public function penilaianPK()
+    {
+        return $this->hasOne(PenilaianPK::class, 'dosen_id');
+    }
+
+    // Relasi dengan PenilaianCF
+    public function penilaianCF()
+    {
+        return $this->hasOne(PenilaianCF::class);
+    }
+
 }

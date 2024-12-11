@@ -8,17 +8,19 @@
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
+    <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
-      <div class="container-fluid py-1 px-3">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Form Penilaian PK</li>
-          </ol>
-          <h6 class="font-weight-bolder mb-0">Selamat datang di halaman Form Penilaian PK</h6>
-        </nav>
-      </div>
-    </nav>
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{ route('pengawas.penilaianpk.index') }}">Penilaian PK</a></li>
+              <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Form Penilaian</li>
+            </ol>
+            <h6 class="font-weight-bolder mb-0">Selamat Datang di Halamanan Form Penilaian PK</h6>
+          </nav>
+        </div>
+      </nav>
+      <!-- End Navbar -->
 
     <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
       <div class="container-fluid">
@@ -325,24 +327,18 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch("{{ route('pengawas.penilaianpk.store') }}", {
                 method: "POST",
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: formData,
+                body: new URLSearchParams(formData),
             })
             .then(response => {
-                if (response.headers.get('content-type')?.includes('application/json')) {
-                    return response.json();
-                } else if (response.redirected) {
-                    window.location.href = response.url;
-                    return;
-                } else {
-                    throw new Error("Respon server tidak valid.");
+                if (!response.ok) {
+                    throw new Error('Gagal menyimpan data');
                 }
+                return response.json();
             })
             .then(data => {
-                if (data && data.message) {
-                    alert(data.message);
-                }
                 alert("Penilaian Perilaku Kerja berhasil disimpan!");
                 window.location.href = "{{ route('pengawas.penilaianpk.index') }}";
             })
@@ -350,8 +346,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error("Error:", error);
                 alert(`Gagal menyimpan data: ${error.message}`);
             });
-
-        });
     });
   </script>
 

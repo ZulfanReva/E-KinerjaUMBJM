@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
+use App\Models\Periode;
+use App\Models\PenilaianPK;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\PendingHasThroughRelationship;
 use App\Models\PenilaianPM; // Asumsikan model PenilaianPM sudah ada
 
 class PenilaianPMController extends Controller
@@ -10,38 +14,57 @@ class PenilaianPMController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+     public function index()
     {
-        // Mendapatkan semua data penilaian PM
-        $penilaians = PenilaianPM::all();
-        return view('pageadmin.penilaianpm.index', compact('penilaians'));
+        // Ambil data dosen aktif beserta nilai PK, periode, dan nilai CF
+        $dataDosen = Dosen::where('status', 'Aktif')
+            ->with([
+                'prodi',  // Relasi prodi untuk menampilkan nama prodi
+                'penilaianPK' => function ($query) {
+                    $query->select('dosen_id', 'nilai_nsf', 'periode_id'); // Tambahkan kolom periode_id dan nilai_nsf
+                },
+                'penilaianPK.periode' => function ($query) {
+                    $query->select('id', 'nama_periode'); // Pastikan hanya mengambil kolom yang diperlukan dari tabel periode
+                },
+                'penilaianCF' => function ($query) {
+                    $query->select('dosen_id', 'nilai_ncf'); // Menyertakan relasi penilaianCF dan hanya mengambil nilai_ncf
+                }
+            ])
+            ->get();
+
+        return view('pageadmin.penilaianpm.index', compact('dataDosen'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Menampilkan form untuk menambah penilaian baru
-        return view('pageadmin.penilaianpm.create');
+        // Ambil data dosen berdasarkan ID yang dikirimkan
+        $dosen = Dosen::find($request->dosen_id);
+
+        if (!$dosen) {
+            return redirect()->route('pageadmin.penilaianpm.index')->with('error', 'Dosen tidak ditemukan.');
+        }
+
+        // Ambil semua data periode
+        $periodeList = Periode::all();
+
+        // Cari periode terakhir dari penilaian PK terkait dosen ini
+        $selectedPeriode = PenilaianPK::where('dosen_id', $dosen->id)
+            ->with('periode') // Pastikan relasi periode di model PenilaianPK sudah dibuat
+            ->orderBy('created_at', 'desc')
+            ->first()?->periode;
+
+        // Kirimkan data ke blade
+        return view('pageadmin.penilaiancf.create', compact('dosen', 'periodeList', 'selectedPeriode'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'nama_kriteria' => 'required|string|max:255',
-            'bobot' => 'required|numeric',
-        ]);
 
-        // Simpan data ke database
-        PenilaianPM::create($request->all());
-
-        return redirect()->route('penilaianpm.index')
-                         ->with('success', 'Penilaian berhasil ditambahkan.');
+        return redirect()->route('admin.penilaianpm.index')->with('success', 'Penilaian berhasil disimpan.');
     }
 
     /**
@@ -51,7 +74,12 @@ class PenilaianPMController extends Controller
     {
         // Menampilkan detail data penilaian berdasarkan ID
         $penilaian = PenilaianPM::findOrFail($id);
-        return view('pageadmin.penilaianpm.show', compact('penilaian'));
+
+        // Fetching the list of periods (Periode)
+        $periodeList = Periode::all();  // Assuming 'Periode' is your model
+
+        // Passing both penilaian and periodeList to the view
+        return view('pageadmin.penilaianpm.show', compact('penilaian', 'periodeList'));
     }
 
     /**

@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('penilaian_cf', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dosen_id')->constrained('dosen')->cascadeOnDelete();
-            $table->foreignId('periode_id')->constrained('periode')->onDelete('cascade');
+            $table->foreignId('periode_id')->nullable()->constrained('periode')->onDelete('set null');
             $table->tinyInteger('bidang_pendidikan')->unsigned();
             $table->tinyInteger('bidang_penelitian')->unsigned();
             $table->tinyInteger('bidang_pengabdian')->unsigned();
             $table->tinyInteger('bidang_penunjang')->unsigned();
-            $table->integer('nilai_ncf');
+            $table->decimal('nilai_ncf');
             $table->timestamps();
         });
     }

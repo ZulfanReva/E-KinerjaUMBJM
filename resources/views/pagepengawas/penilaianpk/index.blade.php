@@ -5,6 +5,7 @@
 
 <body class="g-sidenav-show  bg-gray-100">
   <x-navigasipengawas></x-navigasipengawas>
+  <x-modemalam></x-modemalam>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
@@ -47,53 +48,55 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  @forelse ($dosenaktif as $dosen)
-                                      <tr>
-                                          <td class="text-start">
-                                              <div class="d-flex px-2 py-1">
-                                                  <div class="d-flex flex-column justify-content-center">
-                                                      <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
-                                                  </div>
-                                              </div>
-                                          </td>
-                                          <td class="text-start">
-                                              <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
-                                          </td>
-                                          <td class="text-start">
-                                              <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi }}</p>
-                                          </td>
-                                          <td class="align-middle text-center text-sm">
-                                              <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
-                                          </td>
-                                          @foreach ($dosenaktif as $dosenItem)
-                                              @foreach ($pengawas as $pengawasItem)
-                                                  @php
-                                                      $isRated = $penilaianPKs->where('dosen_id', $dosenItem->id)
-                                                                          ->where('pengawas_id', $pengawasItem->id)
-                                                                          ->first();
-                                                  @endphp
-                                                  <td class="align-middle text-center">
-                                                      @if ($isRated)
-                                                          <a class="btn bg-gradient-success btn-sm mb-0" href="#">
-                                                              Sudah Dinilai
-                                                          </a>
-                                                      @else
-                                                          <a class="badge bg-gradient-primary btn-sm mb-0" href="{{ route('pengawas.penilaianpk.create', ['dosen_id' => $dosenItem->id, 'pengawas_id' => $pengawasItem->id]) }}">
-                                                              Nilai
-                                                          </a>
-                                                      @endif
-                                                  </td>
-                                              @endforeach
-                                          @endforeach
-                                      </tr>
-                                    @empty
-                                      <tr>
-                                          <td colspan="5" class="text-center text-secondary py-4">
-                                              <h6 class="mb-0">BELUM ADA DOSEN YANG DINILAI</h6>
-                                          </td>
-                                      </tr>
-                                    @endforelse
-                              </tbody>
+                                @forelse ($dosenaktif as $dosen)
+                                    <tr>
+                                        <td class="text-start">
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-start">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
+                                        </td>
+                                        <td class="text-start">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi }}</p>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
+                                        </td>
+                            
+                                        <!-- Logika untuk button Nilai atau Sudah Dinilai -->
+                                        @foreach ($pengawas as $pengawasItem)
+                                            @php
+                                                // Cek apakah dosen sudah pernah dinilai oleh pengawas
+                                                $isRated = $penilaianPKs->where('dosen_id', $dosen->id)
+                                                                        ->where('pengawas_id', $pengawasItem->id)
+                                                                        ->first();
+                                            @endphp
+                            
+                                            <td class="align-middle text-center">
+                                                @if ($isRated)
+                                                    <a class="btn bg-gradient-success btn-sm mb-0" href="#">
+                                                        Sudah Dinilai
+                                                    </a>
+                                                @else
+                                                    <a class="badge bg-gradient-danger btn-sm mb-0" href="{{ route('pengawas.penilaianpk.create', ['dosen_id' => $dosen->id, 'pengawas_id' => $pengawasItem->id]) }}">
+                                                        Nilai
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-secondary py-4">
+                                            <h6 class="mb-0">BELUM ADA DOSEN YANG DINILAI</h6>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
                           </table>
                       </div>
                   </div>

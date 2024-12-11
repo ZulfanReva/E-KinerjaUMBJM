@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<x-headeradmin :title="'Penialain PM | E-Kinerja UMBJM'" />
+<x-headeradmin :title="'Penilaian PM | E-Kinerja UMBJM'" />
 
 <body class="g-sidenav-show  bg-gray-100">
   <x-navigasiadmin></x-navigasiadmin>
@@ -12,10 +12,10 @@
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Beranda</li>
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{ route('admin.penilaianpm.index') }}">Beranda</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Penilaian PM</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Penilaian PM</h6>
+          <h6 class="font-weight-bolder mb-0">Selamat Datang di Halaman Penilaian PM</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -41,54 +41,61 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Nama</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">NIDN</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Prodi</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai BKD</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai PK</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai PM</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Nama</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">NIDN</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Prodi</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Periode</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai CF (BKD)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai SF (PK)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nilai PM</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Baris 1 -->
-                    <tr>
+                </thead>
+                <tbody>
+                  @foreach ($dataDosen as $dosen)
+                  <tr>
                       <td class="text-start">
-                        <div class="d-flex px-2 py-1">
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Nama 1</h6>
-                          </div>
-                        </div>
+                          <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
                       </td>
                       <td class="text-start">
-                        <p class="text-xs font-weight-bold mb-0">123456</p>
+                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
                       </td>
                       <td class="text-start">
-                        <p class="text-xs font-weight-bold mb-0">Prodi 1</p>
+                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi ?? '-' }}</p>
                       </td>
                       <td class="align-middle text-center text-sm">
-                        <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
+                          <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
                       </td>
                       <td class="align-middle text-center">
-                        <button class="btn bg-gradient-danger btn-sm mb-0" onclick="nilaiBKD(1)">Nilai</button>
+                          <p class="text-xs font-weight-bold mb-0">{{ $dosen->penilaianPK->periode->nama_periode ?? '-' }}</p>
                       </td>
                       <td class="align-middle text-center">
-                        <span id="nilaiPK-1">90</span>
+                          @if($dosen->penilaianCF) 
+                              <!-- Jika sudah ada nilai CF, tampilkan nilai tersebut -->
+                              <span>{{ $dosen->penilaianCF->nilai_ncf ?? '-' }}</span>
+                          @else
+                              <!-- Jika belum ada nilai CF, tampilkan tombol Nilai -->
+                              <a href="{{ route('admin.penilaiancf.create', ['dosen_id' => $dosen->id]) }}" class="btn bg-gradient-danger btn-sm mb-0">Nilai</a>
+                          @endif
                       </td>
                       <td class="align-middle text-center">
-                        <span id="nilaiPM-1">-</span>
+                          <span>{{ $dosen->penilaianPK->nilai_nsf ?? '-' }}</span>
                       </td>
                       <td class="align-middle text-center">
-                        <button class="btn btn-sm bg-gradient-info me-2" onclick="viewData(1)">
-                          <i class="fa fa-eye fa-xs"></i>
-                        </button>
-                        <button class="btn btn-sm bg-gradient-danger me-2" onclick="hapusData(1)">
-                          <i class="fa fa-trash fa-xs"></i>
-                        </button>
+                          <span>-</span>
                       </td>
-                    </tr>
-                  </tbody>
+                      <td class="align-middle text-center">
+                          <button class="btn btn-sm bg-gradient-info me-2">
+                              <i class="fa fa-eye fa-xs"></i>
+                          </button>
+                          <button class="btn btn-sm bg-gradient-danger me-2">
+                              <i class="fa fa-trash fa-xs"></i>
+                          </button>
+                      </td>
+                  </tr>
+                  @endforeach
+               </tbody>
                 </table>
               </div>
             </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\DataDosenController;
 use App\Http\Controllers\DataJabatanController;
 use App\Http\Controllers\DataJatabanController;
 use App\Http\Controllers\DataPeriodeController;
+use App\Http\Controllers\PenilaianCFController;
 use App\Http\Controllers\PenilaianPKController;
 use App\Http\Controllers\PenilaianPMController;
 use App\Http\Controllers\ProfilAdminController;
@@ -100,6 +101,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         'edit' => 'penilaianpm.edit',
         'update' => 'penilaianpm.update',
         'destroy' => 'penilaianpm.destroy',
+    ]);
+
+    // Penilaian PM menggunakan resource route
+    Route::resource('penilaiancf', PenilaianCFController::class)->names([
+        'index' => 'penilaiancf.index',
+        'create' => 'penilaiancf.create',
+        'store' => 'penilaiancf.store',
+        'show' => 'penilaiancf.show',
+        'edit' => 'penilaiancf.edit',
+        'update' => 'penilaiancf.update',
+        'destroy' => 'penilaiancf.destroy',
     ]);
 
     // Data Periode menggunakan resource route

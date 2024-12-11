@@ -18,4 +18,14 @@ class Periode extends Model
     ];
 
     // Jika Anda ingin menambahkan relasi atau metode lain, Anda bisa melakukannya di sini
+    public function penilaianPKs()
+    {
+        return $this->hasMany(PenilaianPK::class, 'periode_id');
+    }
+
+    // Relasi dengan PenilaianCF
+    public function penilaianCF()
+    {
+        return $this->hasMany(PenilaianCF::class, 'periode_id');
+    }
 }

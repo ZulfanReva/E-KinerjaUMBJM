@@ -26,11 +26,9 @@ class PenilaianPK extends Model
         'nilai_nsf', // Ganti dengan nama field yang sesuai
         // Tambahkan field lainnya sesuai dengan tabel Anda
     ];
-
-    // Jika Anda memiliki relasi, Anda bisa mendefinisikannya di sini
-    // Contoh:
-    // public function dosen()
-    // {
-    //     return $this->belongsTo(Dosen::class);
-    // }
+    // Relasi ke tabel periode
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'periode_id'); // pastikan kolom foreign key benar
+    }
 }
