@@ -33,6 +33,24 @@ class PenilaianPMController extends Controller
             ])
             ->get();
 
+        // Menghitung nilai PM untuk setiap dosen
+        foreach ($dataDosen as $dosen) {
+            if ($dosen->penilaianCF && $dosen->penilaianPK) {
+                // Mengambil nilai_ncf dari penilaianCF dan nilai_nsf dari penilaianPK
+                $nilaiNcf = $dosen->penilaianCF->nilai_ncf;
+                $nilaiNsf = $dosen->penilaianPK->nilai_nsf;
+
+                // Menghitung nilai PM menggunakan rumus
+                $nilaiPm = (0.60 * $nilaiNcf) + (0.40 * $nilaiNsf);
+
+                // Menyimpan nilai PM ke dalam properti sementara untuk ditampilkan di view
+                $dosen->nilai_pm = round($nilaiPm, 2); // Membulatkan nilai PM ke 2 desimal
+            } else {
+                // Jika tidak ada nilai CF atau SF, set nilai PM sebagai null atau kosong
+                $dosen->nilai_pm = null;
+            }
+        }
+
         return view('pageadmin.penilaianpm.index', compact('dataDosen'));
     }
 

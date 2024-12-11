@@ -83,7 +83,11 @@
                           <span>{{ $dosen->penilaianPK->nilai_nsf ?? '-' }}</span>
                       </td>
                       <td class="align-middle text-center">
-                          <span>-</span>
+                          @if($dosen->nilai_pm)
+                              <span>{{ $dosen->nilai_pm }}</span>
+                          @else
+                              <span>-</span>
+                          @endif
                       </td>
                       <td class="align-middle text-center">
                           <button class="btn btn-sm bg-gradient-info me-2">
