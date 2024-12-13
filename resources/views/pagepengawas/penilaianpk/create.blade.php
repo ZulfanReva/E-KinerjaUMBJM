@@ -88,33 +88,33 @@
                             <label for="orientasi-pelayanan">Orientasi Pelayanan</label>
                             <select class="form-select" id="orientasi-pelayanan" name="orientasi_pelayanan" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik) </option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="integritas">Integritas</label>
                             <select class="form-select" id="integritas" name="integritas" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik)</option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="komitmen">Komitmen</label>
                             <select class="form-select" id="komitmen" name="komitmen" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik)</option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                     </div>
@@ -123,33 +123,33 @@
                             <label for="disiplin">Disiplin</label>
                             <select class="form-select" id="disiplin" name="disiplin" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik)</option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="kerjasama">Kerjasama</label>
                             <select class="form-select" id="kerjasama" name="kerjasama" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik)</option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="kepemimpinan">Kepemimpinan</label>
                             <select class="form-select" id="kepemimpinan" name="kepemimpinan" onchange="hitungNSF()">
                                 <option value="">Pilih Nilai</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1">1 (Tidak Memenuhi Syarat)</option>
+                                <option value="2">2 (Kurang Baik)</option>
+                                <option value="3">3 (Cukup)</option>
+                                <option value="4">4 (Baik)</option>
+                                <option value="5">5 (Sangat Baik)</option>
                             </select>
                         </div>
                     </div>

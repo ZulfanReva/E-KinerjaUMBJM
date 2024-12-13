@@ -126,8 +126,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     ]);
 
     // Profil Admin
-    Route::get('/profiladmin', [ProfilAdminController::class, 'index'])->name('profiladmin');
-    });
+    Route::get('/profiladmin', [ProfilAdminController::class, 'index'])->name('profiladmin');});
+    Route::put('/profiladmin/update-password', [ProfilAdminController::class, 'updatePassword'])->name('admin.update.password');
 
 Route::middleware(['auth'])->prefix('pengawas')->name('pengawas.')->group(function () {
     // Halaman beranda pengawas
@@ -142,4 +142,5 @@ Route::middleware(['auth'])->prefix('pengawas')->name('pengawas.')->group(functi
 
     // Profil Pengawas
     Route::get('/profilpengawas', [ProfilPengawasController::class, 'index'])->name('profilpengawas');
+    Route::put('/profilpengawas/update-password', [ProfilPengawasController::class, 'updatePassword'])->name('pengawas.update.password');
 });
