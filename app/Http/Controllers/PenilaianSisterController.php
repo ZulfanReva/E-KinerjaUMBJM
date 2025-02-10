@@ -34,30 +34,19 @@ class PenilaianSisterController extends Controller
      */
     public function create(Request $request)
     {
-        // Ambil data dosen berdasarkan ID yang dikirimkan
-        $dosen = Dosen::find($request->dosen_id);
+        $dosen = Dosen::findOrFail($request->dosen_id);
 
-        if (!$dosen) {
-            return redirect()->route('pageadmin.penilaiansister.index')->with('error', 'Dosen tidak ditemukan.');
-        }
-
-        // Ambil semua data periode
+        // Ambil daftar periode dari tabel `periode` dalam bentuk koleksi
         $periodeList = Periode::all();
 
-        // Cari periode terakhir dari penilaian PK terkait dosen ini
-        $selectedPeriode = PenilaianPerilakuKerja::where('dosen_id', $dosen->id)
-            ->with('periode') // Pastikan relasi periode di model PenilaianPerilakuKerja sudah dibuat
-            ->orderBy('created_at', 'desc')
-            ->first()?->periode;
-
-        // Kirimkan data ke blade
-        return view('pageadmin.penilaiancf.create', compact('dosen', 'periodeList', 'selectedPeriode'));
+        return view('pageadmin.penilaiansister.create', compact('dosen', 'periodeList'));
     }
+
 
     public function store(Request $request)
     {
 
-        return redirect()->route('admin.penilaiansister.index')->with('success', 'Penilaian berhasil disimpan.');
+        return redirect()->route('pageadmin.penilaiansister.index')->with('success', 'Penilaian berhasil disimpan.');
     }
 
     /**

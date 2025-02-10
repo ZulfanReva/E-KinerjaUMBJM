@@ -15,13 +15,12 @@ class PenilaianSISTER extends Model
     // Tentukan field yang dapat diisi massal
     protected $fillable = [
         'dosen_id', // Ganti dengan nama field yang sesuai
-        'pengawas_id', // Ganti dengan nama field yang sesuai
         'periode_id', // Ganti dengan nama field yang sesuai
         'bidang_pendidikan', // Ganti dengan nama field yang sesuai
         'bidang_penelitian', // Ganti dengan nama field yang sesuai
         'bidang_pengabdian', // Ganti dengan nama field yang sesuai
         'bidang_penunjang', // Ganti dengan nama field yang sesuai
-        'nilai_ncf', // Ganti dengan nama field yang sesuai
+        'total_nilai', // Ganti dengan nama field yang sesuai
         // Tambahkan field lainnya sesuai dengan tabel Anda
     ];
 
