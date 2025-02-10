@@ -31,6 +31,19 @@
         </nav>
         <!-- End Navbar -->
 
+        <!-- Menampilkan pesan sukses atau error -->
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                {{ $message }}
+            </div>
+        @endif
+
+        @if ($message = Session::get('error'))
+            <div class="alert alert-danger">
+                {{ $message }}
+            </div>
+        @endif
+
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
@@ -84,12 +97,17 @@
                                                     <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $penilaianSISTER->periode->nama_periode ?? '-' }}</p>
+                                                    @if ($dosen->penilaianSISTER->isNotEmpty())
+                                                        <p class="text-xs font-weight-bold mb-0">
+                                                            {{ $dosen->penilaianSISTER->first()->periode->nama_periode ?? '-' }}
+                                                        </p>
+                                                    @else
+                                                        <p class="text-xs font-weight-bold mb-0">-</p>
+                                                    @endif
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    @if ($dosen->nilai_SISTER)
-                                                        <span>{{ $dosen->nilai_SISTER }}</span>
+                                                    @if ($dosen->penilaianSISTER->isNotEmpty())
+                                                        <span>{{ $dosen->penilaianSISTER->first()->total_nilai ?? '-' }}</span>
                                                     @else
                                                         <span>-</span>
                                                     @endif

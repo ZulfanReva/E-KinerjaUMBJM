@@ -29,4 +29,9 @@ class PenilaianSISTER extends Model
     {
         return $this->belongsTo(Dosen::class, 'dosen_id'); // pastikan kolom foreign key benar
     }
+
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class);
+    }
 }

@@ -53,67 +53,85 @@
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                              <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Nama</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">NIDN</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">Prodi</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Periode</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Penilaian</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($dosenaktif as $dosen)
+                                <table class="table align-items-center mb-0">
+                                    <thead>
                                         <tr>
-                                            <td class="text-start">
-                                                <div class="d-flex px-2 py-1">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
+                                                Nama</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
+                                                NIDN</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
+                                                Prodi</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Periode</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Tanggal Penilaian</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($dosenaktif as $dosen)
+                                            <tr>
+                                                <td class="text-start">
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-sm">{{ $dosen->nama_dosen }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-start">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
-                                            </td>
-                                            <td class="text-start">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $dosen->prodi->nama_prodi }}</p>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                @php
-                                                    $penilaian = $penilaianPerilakuKerjas->where('dosen_id', $dosen->id)->first();
-                                                @endphp
-                                                {{ $penilaian ? $penilaian->periode->nama_periode : '-' }}
-                                            </td>
-                                            <td class="align-middle text-center text-sm">
-                                                {{ $penilaian ? \Carbon\Carbon::parse($penilaian->tanggal_penilaian)->format('d-m-Y') : '-' }}
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                @if ($penilaian)
-                                                    <button class="btn bg-gradient-success btn-sm mb-0" disabled>
-                                                        Sudah Dinilai
-                                                    </button>
-                                                @else
-                                                    <a class="badge bg-gradient-danger btn-sm mb-0" href="{{ route('dosenberjabatan.penilaianperilakukerja.create', ['dosen_id' => $dosen->id]) }}">
-                                                        Nilai
-                                                    </a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center text-secondary py-4">
-                                                <h6 class="mb-0">BELUM ADA DATA PENILAIAN PERILAKU KERJA</h6>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                                </td>
+                                                <td class="text-start">
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $dosen->nidn }}</p>
+                                                </td>
+                                                <td class="text-start">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $dosen->prodi->nama_prodi }}</p>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <span class="badge bg-gradient-success btn-sm mb-0">Aktif</span>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    @php
+                                                        $penilaian = $penilaianPerilakuKerjas
+                                                            ->where('dosen_id', $dosen->id)
+                                                            ->first();
+                                                    @endphp
+                                                    {{ $penilaian ? $penilaian->periode->nama_periode : '-' }}
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    {{ $penilaian ? \Carbon\Carbon::parse($penilaian->tanggal_penilaian)->format('d-m-Y') : '-' }}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    @if ($penilaian)
+                                                        <button class="btn bg-gradient-success btn-sm mb-0" disabled>
+                                                            Sudah Dinilai
+                                                        </button>
+                                                    @else
+                                                        <a class="badge bg-gradient-danger btn-sm mb-0"
+                                                            href="{{ route('dosenberjabatan.penilaianperilakukerja.create', ['dosen_id' => $dosen->id]) }}">
+                                                            Nilai
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center text-secondary py-4">
+                                                    <h6 class="mb-0">BELUM ADA DATA PENILAIAN PERILAKU KERJA</h6>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

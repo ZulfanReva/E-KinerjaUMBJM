@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Periode;
 use App\Models\PenilaianPerilakuKerja;
+use App\Models\PenilaianSISTER;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\PendingHasThroughRelationship;
 
@@ -45,8 +46,31 @@ class PenilaianSisterController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi data yang dikirimkan dari form
+        $request->validate([
+            'dosen_id' => 'required|exists:dosen,id',
+            'periode_id' => 'required|exists:periode,id',
+            'bidang_pendidikan' => 'required|in:1,2',
+            'bidang_penelitian' => 'required|in:1,2',
+            'bidang_pengabdian' => 'required|in:1,2',
+            'bidang_penunjang' => 'required|in:1,2',
+            'total_nilai' => 'required|numeric',
+        ]);
 
-        return redirect()->route('pageadmin.penilaiansister.index')->with('success', 'Penilaian berhasil disimpan.');
+        // Menyimpan Penilaian SISTER ke database
+        PenilaianSISTER::create([
+            'dosen_id' => $request->dosen_id,
+            'periode_id' => $request->periode_id,
+            'bidang_pendidikan' => $request->bidang_pendidikan,
+            'bidang_penelitian' => $request->bidang_penelitian,
+            'bidang_pengabdian' => $request->bidang_pengabdian,
+            'bidang_penunjang' => $request->bidang_penunjang,
+            'total_nilai' => $request->total_nilai,  // Menggunakan total_nilai
+        ]);
+
+        // Redirect kembali ke halaman penilaian dengan pesan sukses
+        return redirect()->route('admin.penilaiansister.index')
+            ->with('success', 'Data SISTER berhasil ditambahkan!');
     }
 
     /**

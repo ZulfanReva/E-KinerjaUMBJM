@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="card card-body blur shadow-blur mx-4 mt-4 overflow-hidden">
-                    <form id="formDataSISTER" method="POST" action="{{ route('admin.penilaiansister.store') }}">
+                    <form id="formDataSISTER" action="{{ route('admin.penilaiansister.store') }}" method="POST">
                         @csrf
                         <h6 class="text-center text-info mb-4 font-weight-bold">FORM PENILAIAN DATA SISTER</h6>
 
@@ -125,24 +125,26 @@
 
                         <!-- Kolom untuk Total Nilai SISTER -->
                         <div class="row mt-4">
-                            <h6 class="font-weight-bold text-info text-center">Total Nilai (SISTER)</h6>
+                            <h6 class="font-weight-bold text-info text-center">TOTAL NILAI</h6>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="nilai-sister-value">Nilai SISTER</label>
-                                    <input type="text" class="form-control" id="ncf-value" name="nilai_sister"
+                                    <label for="total-nilai">Total Nilai</label>
+                                    <input type="text" class="form-control" id="total-nilai" name="total_nilai"
                                         readonly>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Input tersembunyi untuk nilai_sister -->
-                        <input type="hidden" name="nilai_sister" id="nilai-sister-input">
+                        <!-- Input tersembunyi untuk total_nilai -->
+                        <input type="hidden" name="total_nilai" id="total-nilai-input">
+
 
                         <div class="row mt-4">
                             <div class="col-12 text-end">
                                 <button type="button" class="btn btn-outline-secondary"
                                     onclick="window.location.href='{{ route('admin.penilaiansister.index') }}'">Kembali</button>
-                                <button type="submit" class="btn bg-gradient-info me-2">Simpan</button>
+                                <button type="button" id="submitBtn"
+                                    class="btn bg-gradient-info me-2">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -173,78 +175,141 @@
         </div>
 
         <script>
-            function hitungFaktor() {
-                // Standar nilai
-                const standar = 4;
+            function hitungNilaiSISTER() {
+                // Inisialisasi Nilai Standar
+                const standar = {
+                    "bidang-pendidikan": 2,
+                    "bidang-penelitian": 1,
+                    "bidang-pengabdian": 2,
+                    "bidang-penunjang": 1
+                };
 
-                // Core Factor dan Secondary Factor
-                const coreFactorKriteria = ["integritas", "komitmen", "kerjasama"];
-                const secondaryFactorKriteria = ["orientasi-pelayanan", "disiplin", "kepemimpinan"];
+                // Inisialisasi Bobot
+                const bobot = {
+                    0: 5,
+                    "1": 4.5,
+                    "-1": 4
+                };
 
-                let coreTotal = 0;
-                let secondaryTotal = 0;
-                let coreTerisi = true;
-                let secondaryTerisi = true;
+                // Daftar Kriteria
+                const kriteria = [
+                    "bidang-pendidikan",
+                    "bidang-penelitian",
+                    "bidang-pengabdian",
+                    "bidang-penunjang"
+                ];
 
-                // Hitung Core Factor
-                coreFactorKriteria.forEach(id => {
-                    const element = document.getElementById(id);
-                    const value = parseInt(element.value);
-                    if (isNaN(value)) {
-                        coreTerisi = false;
-                    } else {
-                        coreTotal += value - standar;
+                // Perhitungan Nilai
+                let totalBobot = 0;
+                let semuaTerisi = true;
+
+                // Cek apakah semua dropdown sudah dipilih
+                for (const key of kriteria) {
+                    const nilaiElement = document.getElementById(key);
+                    if (!nilaiElement || nilaiElement.value === "") {
+                        semuaTerisi = false;
+                        break;
                     }
-                });
+                }
 
-                // Hitung Secondary Factor
-                secondaryFactorKriteria.forEach(id => {
-                    const element = document.getElementById(id);
-                    const value = parseInt(element.value);
-                    if (isNaN(value)) {
-                        secondaryTerisi = false;
-                    } else {
-                        secondaryTotal += value - standar;
+                // Jika semua dropdown terisi, hitung Total Nilai SISTER
+                if (semuaTerisi) {
+                    for (const key of kriteria) {
+                        const nilaiElement = document.getElementById(key);
+                        const nilaiInt = parseInt(nilaiElement.value);
+                        const gap = nilaiInt - standar[key];
+
+                        // Pastikan gap ada dalam bobot
+                        if (bobot[gap] !== undefined) {
+                            totalBobot += bobot[gap];
+                        }
                     }
-                });
 
-                // Hitung Total Nilai berdasarkan rumus N = (60% x total core factor) + (40% x total secondary factor)
-                if (coreTerisi && secondaryTerisi) {
-                    const coreFactor = coreTotal / coreFactorKriteria.length + 4;
-                    const secondaryFactor = secondaryTotal / secondaryFactorKriteria.length + 4;
-                    const totalNilai = (0.6 * coreFactor) + (0.4 * secondaryFactor);
-                    document.getElementById("total-nilai").value = totalNilai.toFixed(2);
+                    // Hitung dan tampilkan nilai SISTER
+                    const nilaiSister = totalBobot / kriteria.length;
+                    const nilaiSisterRounded = parseFloat(nilaiSister.toFixed(2));
+
+                    document.getElementById("total-nilai").value = nilaiSisterRounded;
+                    document.getElementById("total-nilai-input").value = nilaiSisterRounded;
+
+                    return true;
                 } else {
-                    document.getElementById("total-nilai").value = "";
+                    // Kosongkan Total Nilai SISTER jika belum semua terisi
+                    document.getElementById("nilai-sister-value").value = "";
+                    document.getElementById("nilai-sister-input").value = "";
+                    return false;
                 }
             }
 
-            // Tambahkan event listener ke semua dropdown
-            document.addEventListener("DOMContentLoaded", function() {
-                const kriteria = ["integritas", "komitmen", "kerjasama", "orientasi-pelayanan", "disiplin",
-                    "kepemimpinan"
+            // Tambahkan event listener ke semua dropdown untuk perhitungan real-time
+            document.addEventListener('DOMContentLoaded', function() {
+                const kriteria = [
+                    "bidang-pendidikan",
+                    "bidang-penelitian",
+                    "bidang-pengabdian",
+                    "bidang-penunjang"
                 ];
-                kriteria.forEach(id => {
+
+                kriteria.forEach(function(id) {
                     const dropdown = document.getElementById(id);
                     if (dropdown) {
-                        dropdown.addEventListener("change", hitungFaktor);
+                        dropdown.addEventListener('change', hitungNilaiSISTER);
+                    }
+                });
+
+                // Validasi form sebelum submit
+                const form = document.getElementById("penilaian-bkd-form");
+                form.addEventListener("submit", function(e) {
+                    const kriteria = [
+                        "bidang-pendidikan",
+                        "bidang-penelitian",
+                        "bidang-pengabdian",
+                        "bidang-penunjang"
+                    ];
+
+                    // Cek apakah semua dropdown terisi
+                    const semuaTerisi = kriteria.every(id =>
+                        document.getElementById(id).value !== ""
+                    );
+
+                    if (!semuaTerisi) {
+                        e.preventDefault();
+                        alert("Harap lengkapi semua kolom!");
+
+                        // Tandai field yang kosong
+                        kriteria.forEach(id => {
+                            const dropdown = document.getElementById(id);
+                            if (dropdown.value === "") {
+                                dropdown.classList.add('is-invalid');
+                            } else {
+                                dropdown.classList.remove('is-invalid');
+                            }
+                        });
+                        return;
+                    }
+
+                    // Pastikan perhitungan Total nilai SISTER dilakukan sebelum submit
+                    if (!hitungNilaiSISTER()) {
+                        e.preventDefault();
+                        alert("Gagal menghitung Total Nilai SISTER!");
                     }
                 });
             });
         </script>
 
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const form = document.getElementById('formDataSISTER');
-                const submitBtn = document.getElementById('submitBtn'); // Tombol Selesai
+                const form = document.getElementById('formDataSISTER'); // Form
+                const submitBtn = document.getElementById('submitBtn'); // Tombol Simpan
                 const confirmSaveBtn = document.getElementById('confirmSaveBtn'); // Tombol Simpan di modal
                 const cancelBtn = document.getElementById('cancelBtn'); // Tombol Batal di modal
-                const modalElement = document.getElementById('confirmSaveModal');
+                const modalElement = document.getElementById('confirmSaveModal'); // Modal
                 const modal = new bootstrap.Modal(modalElement); // Inisialisasi modal Bootstrap
 
-                // Event listener untuk tombol "Selesai"
+                // Event listener untuk tombol "Simpan"
                 submitBtn.addEventListener('click', function(e) {
-                    e.preventDefault(); // Mencegah form untuk langsung dikirim
+                    e.preventDefault(); // Mencegah form untuk langsung disubmit
                     if (form.checkValidity()) {
                         modal.show(); // Tampilkan modal konfirmasi jika form valid
                     } else {

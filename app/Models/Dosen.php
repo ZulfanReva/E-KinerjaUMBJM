@@ -45,9 +45,9 @@ class Dosen extends Model
     }
 
     // Relasi dengan Penilaian SISTER
-    public function penilaiansister()
+    public function penilaianSISTER()
     {
-        return $this->hasMany(Penilaiansister::class, 'dosen_id');
+        return $this->hasMany(PenilaianSISTER::class);
     }
 
     // Relasi dengan Penilaian Perilaku Kerja
