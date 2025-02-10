@@ -207,7 +207,9 @@
                                             <select class="form-select" id="filterProdi" name="prodi">
                                                 <option value="">Semua Prodi</option>
                                                 @foreach ($listProdi as $prodi)
-                                                    <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}
+                                                    <option value="{{ $prodi->id }}"
+                                                        {{ request('prodi') == $prodi->id ? 'selected' : '' }}>
+                                                        {{ $prodi->nama_prodi }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -216,8 +218,11 @@
                                             <label for="filterStatus" class="form-label">Status</label>
                                             <select class="form-select" id="filterStatus" name="status">
                                                 <option value="">Semua Status</option>
-                                                <option value="Aktif">Aktif</option>
-                                                <option value="Nonaktif">Nonaktif</option>
+                                                <option value="Aktif"
+                                                    {{ request('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                                <option value="Nonaktif"
+                                                    {{ request('status') == 'Nonaktif' ? 'selected' : '' }}>Nonaktif
+                                                </option>
                                             </select>
                                         </div>
                                     </div>

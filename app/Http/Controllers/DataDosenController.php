@@ -50,7 +50,8 @@ class DataDosenController extends Controller
         }
         $dosenPengajar = $queryPengajar->whereHas('jabatan', function ($query) {
             $query->where('nama_jabatan', 'DOSEN PENGAJAR');
-        })->get();
+        })->paginate(10, ['*'], 'dosenPengajar_page');
+
 
         // Filter untuk Dosen Berjabatan
         $queryBerjabatan = Dosen::with('prodi', 'jabatan', 'user');
@@ -62,7 +63,7 @@ class DataDosenController extends Controller
         }
         $dosenBerjabatan = $queryBerjabatan->whereHas('jabatan', function ($query) {
             $query->where('nama_jabatan', '!=', 'DOSEN PENGAJAR');
-        })->get();
+        })->paginate(10, ['*'], 'dosenBerjabatan_page');
 
         // Ambil daftar Prodi untuk dropdown di filter
         $listProdi = Prodi::all();
