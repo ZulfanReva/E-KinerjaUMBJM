@@ -41,4 +41,10 @@ class PenilaianPerilakuKerja extends Model
     {
         return $this->belongsTo(Periode::class, 'periode_id');
     }
+
+    public function penilaianSISTER()
+    {
+        return $this->hasOne(PenilaianSISTER::class, 'dosen_id', 'dosen_id')
+            ->whereColumn('periode_id', 'periode_id');
+    }
 }

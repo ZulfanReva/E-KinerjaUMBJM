@@ -161,7 +161,7 @@
                                                     {{ $penilaian ? \Carbon\Carbon::parse($penilaian->tanggal_penilaian)->format('d-m-Y') : '-' }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $penilaian->nilai_sister ?? '-' }}
+                                                    {{ $penilaian->nilai_sister }}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $penilaian->total_nilai }}

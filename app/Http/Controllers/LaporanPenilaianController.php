@@ -8,6 +8,7 @@ use App\Models\Periode;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PenilaianPerilakuKerja;
+use App\Models\PenilaianSISTER;
 
 class LaporanPenilaianController extends Controller
 {
@@ -19,7 +20,7 @@ class LaporanPenilaianController extends Controller
         // Ambil list periode untuk dropdown
         $periodeList = Periode::pluck('nama_periode', 'id')->toArray();
 
-        // Query penilaian dengan filter jika ada
+        // Query penilaian perilaku kerja dengan filter jika ada
         $penilaianPerilaku = PenilaianPerilakuKerja::query();
 
         if ($request->filled('prodi')) {
@@ -35,7 +36,18 @@ class LaporanPenilaianController extends Controller
         }
 
         // Ambil data penilaian sesuai filter
-        $penilaianPerilaku = $penilaianPerilaku->get();
+        $penilaianPerilaku = $penilaianPerilaku->with(['dosen', 'periode'])->get();
+
+        // Loop untuk menambahkan nilai (SISTER) berdasarkan periode yang sama
+        $penilaianPerilaku->each(function ($penilaian) {
+            // Cari nilai SISTER dengan periode yang sama
+            $nilaiSister = PenilaianSISTER::where('dosen_id', $penilaian->dosen_id)
+                ->where('periode_id', $penilaian->periode_id) // Cek periode yang sama
+                ->first();
+
+            // Tambahkan nilai SISTER ke objek penilaian
+            $penilaian->nilai_sister = $nilaiSister ? $nilaiSister->total_nilai : '-';
+        });
 
         // Kirim data ke tampilan
         return view('pageadmin.laporanpenilaian.index', [
