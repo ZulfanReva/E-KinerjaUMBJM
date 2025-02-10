@@ -48,8 +48,9 @@ class DosenSeeder extends Seeder
             ['nama_dosen' => 'FINKI DONA MARLENY', 'nidn' => '1126038901', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
             ['nama_dosen' => 'IHDALHUBBI MAULIDA', 'nidn' => '1130099001', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
             ['nama_dosen' => 'KAMARUDIN', 'nidn' => '1129097901', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
-            ['nama_dosen' => 'MUHAMMAD ZIKI ELFIRMAN', 'nidn' => '1109098501', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
-            ['nama_dosen' => 'MUKHAIMY GAZALI', 'nidn' => '1126107902', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
+            // Karena bukan dosen tetap
+            // ['nama_dosen' => 'MUHAMMAD ZIKI ELFIRMAN', 'nidn' => '1109098501', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
+            // ['nama_dosen' => 'MUKHAIMY GAZALI', 'nidn' => '1126107902', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
             ['nama_dosen' => 'NAHDI SAUBARI', 'nidn' => '1108109102', 'prodi_id' => 4, 'status' => 'Nonaktif', 'jabatan_id' => 1, 'users_id' => null],
             ['nama_dosen' => 'WINDARSYAH', 'nidn' => '1104078601', 'prodi_id' => 4, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],
             ['nama_dosen' => 'AFIATUN RAHMAH', 'nidn' => '1127099102', 'prodi_id' => 5, 'status' => 'Aktif', 'jabatan_id' => 1, 'users_id' => null],

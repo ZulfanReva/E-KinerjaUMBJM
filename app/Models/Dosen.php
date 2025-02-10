@@ -44,7 +44,13 @@ class Dosen extends Model
         return $this->belongsTo(User::class, 'users_id'); // Sesuaikan dengan nama kolom
     }
 
-    // Relasi dengan PenilaianPK
+    // Relasi dengan Penilaian SISTER
+    public function penilaiansister()
+    {
+        return $this->hasMany(Penilaiansister::class, 'dosen_id');
+    }
+
+    // Relasi dengan Penilaian Perilaku Kerja
     public function penilaianperilakukerja()
     {
         return $this->hasMany(PenilaianPerilakuKerja::class, 'dosen_id');

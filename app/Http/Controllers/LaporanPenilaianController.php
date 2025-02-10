@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PenilaianPerilakuKerja;
 
-class PenilaianProfileMatchingController extends Controller
+class LaporanPenilaianController extends Controller
 {
     public function index(Request $request)
     {
@@ -38,7 +38,7 @@ class PenilaianProfileMatchingController extends Controller
         $penilaianPerilaku = $penilaianPerilaku->get();
 
         // Kirim data ke tampilan
-        return view('pageadmin.penilaianprofilematching.index', [
+        return view('pageadmin.laporanpenilaian.index', [
             'penilaianPerilaku' => $penilaianPerilaku,
             'prodiList' => $prodiList,
             'periodeList' => $periodeList,
@@ -49,10 +49,10 @@ class PenilaianProfileMatchingController extends Controller
     {
         try {
             $penilaian = PenilaianPerilakuKerja::with(['dosen.prodi', 'user.dosen'])->findOrFail($id);
-            return view('pageadmin.penilaianprofilematching.show', compact('penilaian'));
+            return view('pageadmin.laporanpenilaian.show', compact('penilaian'));
         } catch (\Exception $e) {
             // Perbaiki nama route disini
-            return redirect()->route('admin.penilaianprofilematching.index')
+            return redirect()->route('admin.laporanpenilaian.index')
                 ->with('error', 'Data penilaian tidak ditemukan.');
         }
     }
@@ -103,7 +103,7 @@ class PenilaianProfileMatchingController extends Controller
         $kopImage = base64_encode(file_get_contents(public_path('assets/foto/kopsurat.png')));
         $ttdImage = base64_encode(file_get_contents(public_path('assets/foto/ttddigital.png')));
 
-        $pdf = PDF::loadView('pageadmin.penilaianprofilematching.pdf', [
+        $pdf = PDF::loadView('pageadmin.laporanpenilaian.pdf', [
             'penilaianPerilaku' => $penilaianPerilaku,
             'exportDate' => Carbon::now()->format('d-m-Y H:i:s'),
             'kopBase64' => 'data:image/png;base64,' . $kopImage,

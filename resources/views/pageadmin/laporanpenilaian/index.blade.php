@@ -15,9 +15,9 @@
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark"
                                 href="javascript:;">Halaman</a></li>
-                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Penilaian</li>
+                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Laporan Penilaian</li>
                     </ol>
-                    <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Penilaian</h6>
+                    <h6 class="font-weight-bolder mb-0">Selamat Datang di halaman Laporan Penilaian</h6>
                 </nav>
                 <x-buttonlogout></x-buttonlogout>
             </div>
@@ -33,8 +33,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="filterForm" method="GET"
-                            action="{{ route('admin.penilaianprofilematching.index') }}">
+                        <form id="filterForm" method="GET" action="{{ route('admin.laporanpenilaian.index') }}">
                             <div class="mb-3">
                                 <label for="prodi" class="form-label">Prodi</label>
                                 <select class="form-select" id="prodi" name="prodi">
@@ -68,7 +67,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>Tabel Data Penilaian Perilaku Kerja</h6>
+                            <h6>Tabel Data Laporan Penilaian</h6>
                             <div>
                                 <!-- Button Filter -->
                                 <button class="btn btn-sm bg-gradient-info me-2" data-bs-toggle="modal"
@@ -77,16 +76,16 @@
                                 </button>
                                 <!-- Button dengan icon PDF -->
                                 {{-- <button class="btn btn-sm bg-gradient-info me-2"
-                                    onclick="window.location.href='{{ route('admin.penilaianprofilematching.export-pdf', request()->all()) }}'"
+                                    onclick="window.location.href='{{ route('admin.laporanpenilaian.export-pdf', request()->all()) }}'"
                                     title="Rekap Data">
                                     <i class="fa fa-file-pdf" style="font-size:10px"></i> Rekap Data
                                 </button> --}}
                                 <button class="btn btn-sm bg-gradient-info me-2"
-                                    onclick="window.location.href='{{ route('admin.penilaianprofilematching.export-pdf', request()->all()) }}'"
+                                    onclick="window.location.href='{{ route('admin.laporanpenilaian.export-pdf', request()->all()) }}'"
                                     title="Rekap Data">
                                     <i class="fa fa-print" style="font-size:10px"></i> Rekap Data
                                 </button>
-                                
+
                             </div>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -120,7 +119,11 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Nilai
+                                                Nilai (SISTER)
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Nilai (PK)
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
@@ -158,6 +161,9 @@
                                                     {{ $penilaian ? \Carbon\Carbon::parse($penilaian->tanggal_penilaian)->format('d-m-Y') : '-' }}
                                                 </td>
                                                 <td class="text-center">
+                                                    {{ $penilaian->nilai_sister ?? '-' }}
+                                                </td>
+                                                <td class="text-center">
                                                     {{ $penilaian->total_nilai }}
                                                 </td>
                                                 <td class="text-center">
@@ -180,8 +186,8 @@
                                                     {{ $penilaian->user->dosen->nama_dosen ?? '-' }}
                                                 </td>
                                                 <td class="text-center">
-                                                    <!-- Tombol Cetak yang baru -->
-                                                    <a href="{{ route('admin.penilaianprofilematching.show', $penilaian->id) }}"
+                                                    <!-- Tombol Cetak -->
+                                                    <a href="{{ route('admin.laporanpenilaian.show', $penilaian->id) }}"
                                                         class="btn btn-sm bg-gradient-info me-2" title="Cetak">
                                                         <i class="fa fa-print" style="font-size:10px"></i> Cetak
                                                     </a>
@@ -189,7 +195,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="10" class="text-center text-secondary py-4">
+                                                <td colspan="11" class="text-center text-secondary py-4">
                                                     <h6 class="mb-0">BELUM ADA DATA PENILAIAN</h6>
                                                 </td>
                                             </tr>
@@ -198,6 +204,7 @@
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
