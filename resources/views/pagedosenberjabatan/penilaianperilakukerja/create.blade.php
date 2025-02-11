@@ -36,7 +36,8 @@
                     <form id="formPenilaianPerilaku" method="POST"
                         action="{{ route('dosenberjabatan.penilaianperilakukerja.store') }}">
                         @csrf
-                        <h6 class="text-center text-info mb-4 font-weight-bold">FORM PENILAIAN PERILAKU KERJA PRODI {{ strtoupper($dosen->prodi->nama_prodi) }}</h6>
+                        <h6 class="text-center text-info mb-4 font-weight-bold">FORM PENILAIAN PERILAKU KERJA PRODI
+                            {{ strtoupper($dosen->prodi->nama_prodi) }}</h6>
 
                         <!-- Profil Dosen -->
                         <div class="row">
@@ -225,46 +226,78 @@
         </div>
 
         <script>
-            function hitungFaktor() {
-                // Standar nilai
-                const standar = 4;
+            function hitungTotalNilai() {
+                // Kriteria dan nilai standar untuk setiap kriteria
+                const kriteria = [{
+                        id: "integritas",
+                        standar: 4
+                    },
+                    {
+                        id: "komitmen",
+                        standar: 4
+                    },
+                    {
+                        id: "kerjasama",
+                        standar: 4
+                    },
+                    {
+                        id: "orientasi-pelayanan",
+                        standar: 4
+                    },
+                    {
+                        id: "disiplin",
+                        standar: 4
+                    },
+                    {
+                        id: "kepemimpinan",
+                        standar: 4
+                    }
+                ];
 
-                // Core Factor dan Secondary Factor
-                const coreFactorKriteria = ["integritas", "komitmen", "kerjasama"];
-                const secondaryFactorKriteria = ["orientasi-pelayanan", "disiplin", "kepemimpinan"];
+                let total = 0;
+                let terisi = true;
 
-                let coreTotal = 0;
-                let secondaryTotal = 0;
-                let coreTerisi = true;
-                let secondaryTerisi = true;
-
-                // Hitung Core Factor
-                coreFactorKriteria.forEach(id => {
-                    const element = document.getElementById(id);
+                // Hitung total dari semua nilai yang dipilih dan perhitungkan bobot
+                kriteria.forEach(kriteriaItem => {
+                    const element = document.getElementById(kriteriaItem.id);
                     const value = parseInt(element.value);
+
                     if (isNaN(value)) {
-                        coreTerisi = false;
+                        terisi = false;
                     } else {
-                        coreTotal += value - standar;
+                        // Menghitung selisih (GAP) dan menentukan bobot
+                        const gap = value - kriteriaItem.standar;
+                        let bobot = 0;
+
+                        // Tentukan bobot berdasarkan GAP
+                        if (gap === 0) {
+                            bobot = 5;
+                        } else if (gap === 1) {
+                            bobot = 4.5;
+                        } else if (gap === -1) {
+                            bobot = 4;
+                        } else if (gap === 2) {
+                            bobot = 3.5;
+                        } else if (gap === -2) {
+                            bobot = 3;
+                        } else if (gap === 3) {
+                            bobot = 2.5;
+                        } else if (gap === -3) {
+                            bobot = 2;
+                        } else if (gap === 4) {
+                            bobot = 1.5;
+                        } else if (gap === -4) {
+                            bobot = 1;
+                        }
+
+                        // Menambahkan bobot ke total
+                        total += bobot;
                     }
                 });
 
-                // Hitung Secondary Factor
-                secondaryFactorKriteria.forEach(id => {
-                    const element = document.getElementById(id);
-                    const value = parseInt(element.value);
-                    if (isNaN(value)) {
-                        secondaryTerisi = false;
-                    } else {
-                        secondaryTotal += value - standar;
-                    }
-                });
-
-                // Hitung Total Nilai berdasarkan rumus N = (60% x total core factor) + (40% x total secondary factor)
-                if (coreTerisi && secondaryTerisi) {
-                    const coreFactor = coreTotal / coreFactorKriteria.length + 4;
-                    const secondaryFactor = secondaryTotal / secondaryFactorKriteria.length + 4;
-                    const totalNilai = (0.6 * coreFactor) + (0.4 * secondaryFactor);
+                // Jika semua nilai terisi, hitung rata-rata
+                if (terisi) {
+                    const totalNilai = total / kriteria.length;
                     document.getElementById("total-nilai").value = totalNilai.toFixed(2);
                 } else {
                     document.getElementById("total-nilai").value = "";
@@ -279,11 +312,12 @@
                 kriteria.forEach(id => {
                     const dropdown = document.getElementById(id);
                     if (dropdown) {
-                        dropdown.addEventListener("change", hitungFaktor);
+                        dropdown.addEventListener("change", hitungTotalNilai);
                     }
                 });
             });
         </script>
+
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
