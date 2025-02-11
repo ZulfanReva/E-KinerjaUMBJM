@@ -95,80 +95,72 @@
                                         <tr>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
-                                                Nama Dosen
-                                            </th>
+                                                Nama Dosen</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
-                                                NIDN
-                                            </th>
+                                                NIDN</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
-                                                Prodi
-                                            </th>
+                                                Prodi</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Status
-                                            </th>
+                                                Status</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Periode
-                                            </th>
+                                                Periode</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Tanggal Penilaian
-                                            </th>
+                                                Tanggal Penilaian</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Nilai (SISTER)
-                                            </th>
+                                                Nilai (SISTER)</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Nilai (PK)
-                                            </th>
+                                                Nilai (PK)</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Grade
-                                            </th>
+                                                Total Nilai</th> <!-- Kolom Total Nilai -->
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Dosen Penilai
-                                            </th>
+                                                Grade</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                Aksi
-                                            </th>
+                                                Dosen Penilai</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($penilaianPerilaku as $penilaian)
                                             <tr>
-                                                <td class="text-start">
-                                                    {{ $penilaian->dosen->nama_dosen }}
+                                                <td class="text-start">{{ $penilaian->dosen->nama_dosen }}</td>
+                                                <td class="text-start">{{ $penilaian->dosen->nidn }}</td>
+                                                <td class="text-start">{{ $penilaian->dosen->prodi->nama_prodi ?? '-' }}
                                                 </td>
-                                                <td class="text-start">
-                                                    {{ $penilaian->dosen->nidn }}
-                                                </td>
-                                                <td class="text-start">
-                                                    {{ $penilaian->dosen->prodi->nama_prodi ?? '-' }}
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="badge bg-gradient-success">Aktif</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    {{ $penilaian->periode->nama_periode ?? '-' }}
+                                                <td class="text-center"><span
+                                                        class="badge bg-gradient-success">Aktif</span></td>
+                                                <td class="text-center">{{ $penilaian->periode->nama_periode ?? '-' }}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $penilaian ? \Carbon\Carbon::parse($penilaian->tanggal_penilaian)->format('d-m-Y') : '-' }}
                                                 </td>
+                                                <td class="text-center">{{ $penilaian->nilai_sister }}</td>
+                                                <td class="text-center">{{ $penilaian->total_nilai }}</td>
                                                 <td class="text-center">
-                                                    {{ $penilaian->nilai_sister }}
-                                                </td>
-                                                <td class="text-center">
-                                                    {{ $penilaian->total_nilai }}
+                                                    @php
+                                                        // Pastikan nilai_sister dan total_nilai dikonversi ke tipe data float
+                                                        $nilaiSister = floatval($penilaian->nilai_sister);
+                                                        $nilaiPK = floatval($penilaian->total_nilai);
+
+                                                        // Hitung Total Nilai
+                                                        $totalNilai = 0.6 * $nilaiSister + 0.4 * $nilaiPK;
+                                                    @endphp
+                                                    {{ number_format($totalNilai, 2) }}
                                                 </td>
                                                 <td class="text-center">
                                                     @php
-                                                        $nilai = $penilaian->total_nilai;
+                                                        $nilai = $totalNilai;
                                                         $grade =
                                                             $nilai >= 4.56
                                                                 ? 'A'
@@ -183,8 +175,7 @@
                                                     {{ $grade }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $penilaian->user->dosen->nama_dosen ?? '-' }}
-                                                </td>
+                                                    {{ $penilaian->user->dosen->nama_dosen ?? '-' }}</td>
                                                 <td class="text-center">
                                                     <!-- Tombol Cetak -->
                                                     <a href="{{ route('admin.laporanpenilaian.show', $penilaian->id) }}"
