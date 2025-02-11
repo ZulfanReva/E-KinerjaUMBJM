@@ -69,6 +69,31 @@
             </div>
         </div>
 
+        <!-- Reset Confirmation Modal -->
+        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resetModalLabel">Konfirmasi Reset Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin mereset semua data filter? Pastikan kamu sudah merekap laporan penilaian yang sudah ada sebelum memulai penilaian periode baru
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Batal</button>
+                        <form action="{{ route('admin.penilaiansister.reset') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn bg-gradient-info">Ya, Reset Data</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Menampilkan pesan sukses atau error -->
         @if ($message = Session::get('success'))
             <div class="alert alert-success">
@@ -93,6 +118,11 @@
                                 <button class="btn btn-sm bg-gradient-info me-2" data-bs-toggle="modal"
                                     data-bs-target="#filterModal" title="Filter Data">
                                     <i class="fa fa-filter" style="font-size:10px"></i> Filter
+                                </button>
+                                <!-- Button Reset -->
+                                <button class="btn btn-sm bg-gradient-warning" data-bs-toggle="modal"
+                                    data-bs-target="#resetModal" title="Reset Data">
+                                    <i class="fa fa-refresh" style="font-size:10px"></i> Reset
                                 </button>
                             </div>
                         </div>
@@ -229,27 +259,6 @@
                                     }
                                 </style>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Konfirmasi Hapus -->
-            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Apakah Anda yakin ingin menghapus data ini?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Ya</button>
                         </div>
                     </div>
                 </div>

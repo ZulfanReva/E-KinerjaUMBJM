@@ -7,6 +7,7 @@ use App\Models\Prodi;
 use App\Models\Periode;
 use Illuminate\Http\Request;
 use App\Models\PenilaianSISTER;
+use Illuminate\Support\Facades\DB;
 use App\Models\PenilaianPerilakuKerja;
 use Illuminate\Database\Eloquent\PendingHasThroughRelationship;
 
@@ -176,5 +177,20 @@ class PenilaianSisterController extends Controller
 
         // Redirect kembali dengan pesan sukses
         return redirect()->route('admin.penilaiansister.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    public function reset(Request $request)
+    {
+        try {
+            // Hapus semua data di tabel penilaian_sister
+            DB::table('penilaian_sister')->truncate();
+
+            // Clear filter session data
+            $request->session()->forget('sister_filters');
+
+            return redirect()->back()->with('success', 'Data penilaian SISTER berhasil direset');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mereset data: ' . $e->getMessage());
+        }
     }
 }

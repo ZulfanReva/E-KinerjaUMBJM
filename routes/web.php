@@ -76,6 +76,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Penilaian Perilaku Kerja
     Route::resource('penilaiansister', PenilaianSisterController::class)->except(['create']);
     Route::get('penilaiansister/create/{dosen_id}', [PenilaianSisterController::class, 'create'])->name('penilaiansister.create');
+    Route::post('penilaiansister/reset', [PenilaianSisterController::class, 'reset'])->name('penilaiansister.reset');
 
     // Laporan Penilaian
     Route::resource('laporanpenilaian', LaporanPenilaianController::class)->names([
