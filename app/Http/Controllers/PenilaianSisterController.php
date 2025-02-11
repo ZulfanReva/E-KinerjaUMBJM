@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\Prodi;
 use App\Models\Periode;
-use App\Models\PenilaianPerilakuKerja;
-use App\Models\PenilaianSISTER;
 use Illuminate\Http\Request;
+use App\Models\PenilaianSISTER;
+use App\Models\PenilaianPerilakuKerja;
 use Illuminate\Database\Eloquent\PendingHasThroughRelationship;
 
 class PenilaianSisterController extends Controller
@@ -15,20 +16,61 @@ class PenilaianSisterController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua data dosen dengan relasi 'prodi', 'jabatan', 'user'
-        $dosens = Dosen::with('prodi', 'jabatan')->get();
+        // Ambil list Prodi untuk dropdown
+        $prodiList = Prodi::all();
 
-        // Ambil dosen dengan jabatan 'DOSEN PENGAJAR'
-        $dosenPengajar = Dosen::with('prodi', 'jabatan')
+        // Ambil list periode untuk dropdown
+        $periodeList = Periode::pluck('nama_periode', 'id')->toArray();
+
+        // Query penilaian SISTER dengan filter jika ada
+        $penilaianSister = PenilaianSister::query();
+
+        if ($request->filled('prodi')) {
+            $penilaianSister->whereHas('dosen.prodi', function ($query) use ($request) {
+                $query->where('id', $request->prodi);
+            });
+        }
+
+        if ($request->filled('periode')) {
+            $penilaianSister->where('periode_id', $request->periode);
+        }
+
+        // Ambil data penilaian sesuai filter
+        $penilaianSister = $penilaianSister->with(['dosen', 'periode'])->paginate(10);
+
+        // Ambil dosen dengan jabatan 'DOSEN PENGAJAR' sesuai filter
+        $dosenPengajar = Dosen::with(['prodi', 'jabatan', 'penilaianSISTER.periode'])
             ->whereHas('jabatan', function ($query) {
                 $query->where('nama_jabatan', 'DOSEN PENGAJAR');
-            })
-            ->paginate(10, ['*'], 'dosenPengajar_page'); // Pagination untuk Dosen Pengajar
+            });
 
-        return view('pageadmin.penilaiansister.index', compact('dosenPengajar'));
+        // Terapkan filter berdasarkan prodi jika dipilih
+        if ($request->filled('prodi')) {
+            $dosenPengajar->where('prodi_id', $request->prodi);
+        }
+
+        // Terapkan filter berdasarkan periode jika dipilih
+        if ($request->filled('periode')) {
+            $dosenPengajar->whereHas('penilaianSISTER', function ($query) use ($request) {
+                $query->where('periode_id', $request->periode);
+            });
+        }
+
+        // Gunakan pagination untuk hasil query dosen
+        $dosenPengajar = $dosenPengajar->paginate(10, ['*'], 'dosenPengajar_page');
+
+
+        // Kirim data ke tampilan
+        return view('pageadmin.penilaiansister.index', [
+            'penilaianSister' => $penilaianSister,
+            'dosenPengajar' => $dosenPengajar, // Dosen Pengajar dikembalikan
+            'prodiList' => $prodiList,
+            'periodeList' => $periodeList,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

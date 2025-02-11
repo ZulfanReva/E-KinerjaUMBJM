@@ -31,6 +31,44 @@
         </nav>
         <!-- End Navbar -->
 
+        <!-- Modal Filter -->
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Penilaian</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="filterForm" method="GET" action="{{ route('admin.penilaiansister.index') }}">
+                            <div class="mb-3">
+                                <label for="prodi" class="form-label">Prodi</label>
+                                <select class="form-select" id="prodi" name="prodi">
+                                    <option value="">SEMUA PRODI</option>
+                                    @foreach ($prodiList as $prodi)
+                                        <option value="{{ $prodi->id }}">{{ $prodi->nama_prodi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="periode" class="form-label">Periode</label>
+                                <select class="form-select" id="periode" name="periode">
+                                    <option value="">SEMUA PERIODE</option>
+                                    @foreach ($periodeList as $id => $nama_periode)
+                                        <option value="{{ $id }}">{{ $nama_periode }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn bg-gradient-info">Filter</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Menampilkan pesan sukses atau error -->
         @if ($message = Session::get('success'))
             <div class="alert alert-success">
@@ -48,8 +86,15 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header pb-0">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>Tabel Data SISTER</h6>
+                            <div>
+                                <!-- Button Filter -->
+                                <button class="btn btn-sm bg-gradient-info me-2" data-bs-toggle="modal"
+                                    data-bs-target="#filterModal" title="Filter Data">
+                                    <i class="fa fa-filter" style="font-size:10px"></i> Filter
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
