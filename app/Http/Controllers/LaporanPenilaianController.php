@@ -142,7 +142,7 @@ class LaporanPenilaianController extends Controller
     public function exportPDF(Request $request)
     {
         // Get filtered data based on request parameters
-        $query = PenilaianPerilakuKerja::with(['dosen.prodi', 'user.dosen']);
+        $query = PenilaianPerilakuKerja::with(['dosen.prodi', 'user.dosen', 'periode']);
 
         $periodeFilter = 'SEMUA PERIODE';
         if ($request->has('prodi') && $request->prodi) {
@@ -160,16 +160,31 @@ class LaporanPenilaianController extends Controller
 
         $penilaianPerilaku = $query->get();
 
+        // Loop untuk menambahkan nilai SISTER
+        $penilaianPerilaku->each(function ($penilaian) {
+            // Cari nilai SISTER dengan periode yang sama
+            $nilaiSister = PenilaianSISTER::where('dosen_id', $penilaian->dosen_id)
+                ->where('periode_id', $penilaian->periode_id)
+                ->first();
+
+            // Tambahkan nilai SISTER ke objek penilaian
+            $penilaian->nilai_sister = $nilaiSister ? $nilaiSister->total_nilai : '-';
+        });
+
         // Calculate grades and add as attribute
         $penilaianPerilaku->map(function ($penilaian) {
-            $nilai = $penilaian->total_nilai;
-            $penilaian->grade = $nilai >= 4.56 ? 'A' : ($nilai >= 3.56 ? 'B' : ($nilai >= 2.56 ? 'C' : ($nilai >= 1.56 ? 'D' : 'E')));
+            // Hitung total nilai berdasarkan nilai SISTER dan nilai PK
+            $nilaiSister = floatval($penilaian->nilai_sister !== '-' ? $penilaian->nilai_sister : 0);
+            $nilaiPK = floatval($penilaian->total_nilai);
+            $totalNilai = 0.6 * $nilaiSister + 0.4 * $nilaiPK;
+
+            // Set grade berdasarkan total nilai yang baru
+            $penilaian->grade = $totalNilai >= 4.56 ? 'A' : ($totalNilai >= 3.56 ? 'B' : ($totalNilai >= 2.56 ? 'C' : ($totalNilai >= 1.56 ? 'D' : 'E')));
             return $penilaian;
         });
 
         // Sort collection by total_nilai (descending) and grade
         $penilaianPerilaku = $penilaianPerilaku->sortByDesc(function ($penilaian) {
-            // Create a custom sorting array: first by total_nilai, then by grade
             $gradeOrder = [
                 'A' => 1,
                 'B' => 2,
