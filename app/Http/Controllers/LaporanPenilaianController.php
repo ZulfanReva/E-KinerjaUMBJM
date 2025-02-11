@@ -60,14 +60,84 @@ class LaporanPenilaianController extends Controller
     public function show($id)
     {
         try {
+            // Ambil data penilaian perilaku kerja, dosen, dan user
             $penilaian = PenilaianPerilakuKerja::with(['dosen.prodi', 'user.dosen'])->findOrFail($id);
+
+            // Ambil data penilaian SISTER yang sesuai dengan dosen dan periode penilaian
+            $nilaiSister = PenilaianSISTER::where('dosen_id', $penilaian->dosen_id)
+                ->where('periode_id', $penilaian->periode_id)
+                ->first();
+
+            // Menambahkan nilai SISTER ke objek penilaian
+            $penilaian->penilaian_sister = $nilaiSister;
+
+            // Hitung total nilai
+            $nilaiSisterValue = floatval($penilaian->penilaian_sister->total_nilai ?? 0);
+            $nilaiPK = floatval($penilaian->total_nilai);
+            $totalNilai = 0.6 * $nilaiSisterValue + 0.4 * $nilaiPK;
+
+            // Tentukan grade berdasarkan total nilai
+            $grade = $totalNilai >= 4.56 ? 'A' : ($totalNilai >= 3.56 ? 'B' : ($totalNilai >= 2.56 ? 'C' : ($totalNilai >= 1.56 ? 'D' : 'E')));
+
+            // Tentukan kesimpulan berdasarkan grade
+            $kesimpulan = [];
+            if ($grade === 'A') {
+                $kesimpulan = [
+                    'Pujian dalam forum rapat resmi',
+                    'Sertifikat keberhasilan',
+                    'Piagam penghargaan',
+                    'Tugas belajar atau studi lanjut (di dalam/luar negeri) atas biaya universitas',
+                    'Loncat jabatan fungsional atau kenaikan pangkat istimewa',
+                    'Publikasi atas biaya universitas',
+                ];
+            } elseif ($grade === 'B') {
+                $kesimpulan = [
+                    'Pujian dalam forum rapat resmi',
+                    'Ucapan terima kasih secara formal',
+                    'Sertifikat keberhasilan',
+                    'Pembebasan SPP untuk pendidikan lanjutan',
+                    'Tugas belajar (tergantung keputusan universitas)',
+                ];
+            } elseif ($grade === 'C') {
+                $kesimpulan = [
+                    'Pujian dalam forum rapat resmi (hanya jika dianggap cukup memadai)',
+                    'Teguran lisan (jika dianggap perlu perbaikan)',
+                    'Teguran tertulis (untuk dorongan peningkatan kinerja ke depannya)',
+                ];
+            } elseif ($grade === 'D') {
+                $kesimpulan = [
+                    'Teguran lisan atau tertulis',
+                    'Peringatan keras',
+                    'Penundaan kenaikan gaji berkala',
+                    'Penundaan kenaikan pangkat',
+                ];
+            } else {
+                $kesimpulan = [
+                    'Peringatan keras',
+                    'Pembebasan tugas',
+                    'Penundaan kenaikan gaji berkala',
+                    'Penundaan kenaikan pangkat',
+                    'Pemberhentian jika tidak ada perbaikan signifikan',
+                ];
+            }
+
+            // Menambahkan kesimpulan ke objek penilaian
+            $penilaian->kesimpulan = $kesimpulan;
+
+            // Menambahkan total nilai dan grade ke objek penilaian
+            $penilaian->total_nilai_calculated = number_format($totalNilai, 2);
+            $penilaian->grade = $grade;
+
+            // Kirim data ke tampilan
             return view('pageadmin.laporanpenilaian.show', compact('penilaian'));
         } catch (\Exception $e) {
-            // Perbaiki nama route disini
+            // Jika data tidak ditemukan, redirect dengan pesan error
             return redirect()->route('admin.laporanpenilaian.index')
                 ->with('error', 'Data penilaian tidak ditemukan.');
         }
     }
+
+
 
     public function exportPDF(Request $request)
     {
